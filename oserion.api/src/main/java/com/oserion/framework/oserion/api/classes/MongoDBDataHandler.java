@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.oserion.framework.oserion.api.interfaces.IDataHandler;
 
-@Component
+//@Component
 public class MongoDBDataHandler implements IDataHandler {
 
 	public String insertOrUpdateTemplate(String string) {
