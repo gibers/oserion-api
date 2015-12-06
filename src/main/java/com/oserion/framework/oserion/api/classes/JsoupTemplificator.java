@@ -1,7 +1,14 @@
 package com.oserion.framework.oserion.api.classes;
 
+import java.util.Iterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.Validate;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.oserion.framework.oserion.api.interfaces.ITemplate;
 import com.oserion.framework.oserion.api.interfaces.ITemplificator;
@@ -25,9 +32,23 @@ public class JsoupTemplificator implements ITemplificator {
 		return template;
 	}
 	
+	
 	private void splitContenu(String fluxTemplate) {
+		Document docJsoup = Jsoup.parse(fluxTemplate);
 		
+		Elements ele = docJsoup.select(".editable");
+				
+//		Elements ele = docJsoup.getElementsByClass("editable");
+		
+		System.out.println("taille ele => " + ele.size());
+		
+		Iterator<Element> it = ele.iterator();
+		while(it.hasNext()) {
+			System.out.println(it.next().toString());
+		}
 	}
+	
+	
 	
 //	private String getSquelette(String fluxTemplate) {
 //		return "squeltte";
