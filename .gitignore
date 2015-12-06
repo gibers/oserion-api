@@ -1,1 +1,3 @@
 /target/
+.*
+toto.txt
