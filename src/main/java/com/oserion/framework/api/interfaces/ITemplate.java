@@ -1,6 +1,7 @@
 package com.oserion.framework.api.interfaces;
 
 import java.util.List;
+import java.util.Map;
 
 import com.oserion.framework.api.mongo.ContentElement;
 
@@ -15,7 +16,9 @@ public interface ITemplate {
 	public List<ContentElement> getListVariableElement() ;
 	public void setListVariableElement(List<ContentElement> listVariableElement) ;
 
-	public void affiche();
+	public void afficheTemplateEle();
+	public void afficheVariableTemplateEle();
+	public Map<String, Object> listTemplateMap(List<ContentElement> listElement);
 	
 }
 

@@ -17,6 +17,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.oserion.framework.api.configurationbeans.CentraleBean;
 import com.oserion.framework.api.implementation.Api418Facade;
+import com.oserion.framework.api.mongo.ContentElement;
 
 /**
  * Hello world!
@@ -31,12 +32,17 @@ public class App  {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CentraleBean.class);
 		Api418Facade a418f = context.getBean(Api418Facade.class);
 		
-		String fluxTemplate = "<div><div id='monid1' class='bernard editable'>ceci est du texte</div><div id='monid2_ref:page' class='bernard'>ceci est un autre texte</div></div>";
+		String fluxTemplate = "<div><div id='monid1' class='bernard editable'>ceci est du <p>texte</p> </div><div id='monid2_ref:page' class='bernard editable'>ceci est un autre <p>texte</p> </div></div>";
 		String templateName = "premierTemplate";
 
+		
 		a418f.uploadTemplateFromHtml(fluxTemplate, templateName);
 		
+		String retourTemplate = a418f.getHTMLPage(templateName);
+		System.out.println("retourTemplate => " + retourTemplate);
 
+		a418f.insertOrUpdateContenue("monid11", ContentElement.Type.EDITABLE.name(), "nouveau contenu" );
+		
 	}
 }
 

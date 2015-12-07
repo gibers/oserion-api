@@ -5,32 +5,40 @@ public class ContentElement {
 	public enum Type { EDITABLE, REPEATABLE }
 	
 	private String ref;
-	private Enum Type ;
+	private String type ;
 	private String value;
 	
 	public ContentElement(String ref, Enum type, String value) {
 		this.ref = ref;
-		this.Type = type;
+		this.type = type.name();
 		this.value = value;
 	}
 	
 	public String getRef() {
 		return ref;
 	}
-	public void setRef(String ref) {
-		this.ref = ref;
+//	public void setRef(String ref) {
+//		this.ref = ref;
+//	}
+	public String getType() {
+		return type;
 	}
-	public Enum getType() {
-		return Type;
-	}
-	public void setType(Enum type) {
-		Type = type;
-	}
+//	public void setType(String type) {
+//		this.type = type;
+//	}
 	public String getValue() {
 		return value;
 	}
-	public void setValue(String value) {
-		this.value = value;
+//	public void setValue(String value) {
+//		this.value = value;
+//	}
+	
+	
+	public void affiche() {
+		System.out.println("---------------------");
+		System.out.println("ref => " + ref);
+		System.out.println("type => " + type);
+		System.out.println("value => " + value);
 	}
 
 }

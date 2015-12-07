@@ -1,9 +1,14 @@
 package com.oserion.framework.api.jsoup;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.bson.Document;
 import org.springframework.stereotype.Component;
 
+import com.mongodb.client.MongoCollection;
 import com.oserion.framework.api.interfaces.ITemplate;
 import com.oserion.framework.api.mongo.ContentElement;
 
@@ -13,8 +18,8 @@ public class JsoupTemplate implements ITemplate {
 	private String name = null;
 	private String html = null;
 	
-	private List<ContentElement> listTemplateElement  = null;
-	private List<ContentElement> listVariableElement  = null;
+	private List<ContentElement> listTemplateElement  = new ArrayList<ContentElement>();
+	private List<ContentElement> listVariableElement  = new ArrayList<ContentElement>();
 //	private List<ContentElement> listPage   = null;
 	
 	
@@ -44,14 +49,49 @@ public class JsoupTemplate implements ITemplate {
 	}
 	
 	
+	/**
+	 * Converti un list<ContentElement> en Map, afin de l'insérer en bdd.
+	 * 
+	 */
+	public Map<String, Object> listTemplateMap(List<ContentElement> listElement) {
+		Map<String, Object> listTypeEtRef = new HashMap<String, Object>();
+		for(ContentElement cte : listElement) {
+			listTypeEtRef.put(cte.getType() , cte.getRef());
+		}
+		return listTypeEtRef;
+	}
+	
+//	public Map<String, Object> listTemplateMapWithContenu(List<ContentElement> listElement) {
+//		Map<String, Object> listTypeRefContenu = new HashMap<String, Object>();
+//		for(ContentElement cte : listElement) {
+//			listTypeRefContenu.put("ref" , cte.getRef());
+//			listTypeRefContenu.put("type" , cte.getType());
+//			listTypeRefContenu.put("value" , cte.getValue());
+//		}
+//		return listTypeRefContenu;
+//	}
+	
+	
+	/**
+	 * Les constructeurs
+	 * @param name
+	 */
 	public JsoupTemplate(String name) {
 		this.name = name;
 	}
-	public JsoupTemplate() {
-	}
 	
-	public void affiche () {
-		System.out.println("template name => " + name );
+	
+	/* DEBUG */
+	public void afficheTemplateEle () {
+		for(ContentElement cte : listTemplateElement)
+			cte.affiche();
+	}
+	public void afficheVariableTemplateEle () {
+		for(ContentElement cte : listVariableElement)
+			cte.affiche();
 	}
 	
 }
+
+
+
