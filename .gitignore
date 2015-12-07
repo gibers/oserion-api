@@ -1,3 +1,7 @@
 /target/
-.*
-toto.txt
+/bin/
+.project
+*.iml
+.classpath
+/.idea/
+*.settings
