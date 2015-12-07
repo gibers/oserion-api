@@ -1,23 +1,8 @@
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static com.mongodb.client.model.Filters.*;
-
-import com.mongodb.Block;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import com.oserion.framework.api.configurationbeans.CentraleBean;
-import com.oserion.framework.api.implementation.Api418Facade;
-import com.oserion.framework.api.mongo.ContentElement;
+import com.oserion.framework.api.util.CentraleBean;
+import com.oserion.framework.api.Api418Facade;
+import com.oserion.framework.api.business.impl.mongo.ContentElement;
 
 /**
  * Hello world!

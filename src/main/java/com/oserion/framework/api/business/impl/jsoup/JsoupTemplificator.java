@@ -1,16 +1,12 @@
-package com.oserion.framework.api.jsoup;
+package com.oserion.framework.api.business.impl.jsoup;
 
 import java.util.Iterator;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.oserion.framework.api.interfaces.ITemplate;
-import com.oserion.framework.api.interfaces.ITemplificator;
-import com.oserion.framework.api.mongo.ContentElement;
+import com.oserion.framework.api.business.ITemplate;
+import com.oserion.framework.api.business.ITemplificator;
+import com.oserion.framework.api.business.impl.mongo.ContentElement;
 
 import org.jsoup.Jsoup;
-import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

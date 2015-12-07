@@ -1,22 +1,17 @@
-package com.oserion.framework.api.mongo;
+package com.oserion.framework.api.business.impl.mongo;
 
 import static com.mongodb.client.model.Filters.eq;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bson.BSON;
 import org.bson.Document;
-import org.springframework.stereotype.Component;
 
-import com.mongodb.BulkWriteOperation;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.oserion.framework.api.interfaces.IDataHandler;
-import com.oserion.framework.api.interfaces.ITemplate;
-import com.oserion.framework.api.interfaces.ITemplificator;
+import com.oserion.framework.api.business.IDataHandler;
+import com.oserion.framework.api.business.ITemplate;
 
 
 public class MongoDBDataHandler implements IDataHandler {

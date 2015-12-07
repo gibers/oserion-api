@@ -1,4 +1,4 @@
-package com.oserion.framework.api.mongo;
+package com.oserion.framework.api.business.impl.mongo;
 
 public class ContentElement {
 	

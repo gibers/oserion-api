@@ -1,19 +1,17 @@
-package com.oserion.framework.api.configurationbeans;
+package com.oserion.framework.api.util;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import com.oserion.framework.api.implementation.Api418Facade;
-import com.oserion.framework.api.interfaces.IDataHandler;
-import com.oserion.framework.api.interfaces.ITemplificator;
-import com.oserion.framework.api.jsoup.JsoupTemplificator;
-import com.oserion.framework.api.mongo.MongoDBDataHandler;
+import com.oserion.framework.api.Api418Facade;
+import com.oserion.framework.api.business.IDataHandler;
+import com.oserion.framework.api.business.ITemplificator;
+import com.oserion.framework.api.business.impl.jsoup.JsoupTemplificator;
+import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 
 @Configuration
-@ComponentScan(basePackages={ "com.oserion.framework.api.interfaces"})
+@ComponentScan(basePackages={"com.oserion.framework.api.business.interfaces"})
 public class CentraleBean {
 	
 	@Bean

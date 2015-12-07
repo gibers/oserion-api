@@ -1,4 +1,4 @@
-package com.oserion.framework.api.mongo;
+package com.oserion.framework.api.business.impl.mongo;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;

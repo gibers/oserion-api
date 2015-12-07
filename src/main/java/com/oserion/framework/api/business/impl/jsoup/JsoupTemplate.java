@@ -1,16 +1,12 @@
-package com.oserion.framework.api.jsoup;
+package com.oserion.framework.api.business.impl.jsoup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bson.Document;
-import org.springframework.stereotype.Component;
-
-import com.mongodb.client.MongoCollection;
-import com.oserion.framework.api.interfaces.ITemplate;
-import com.oserion.framework.api.mongo.ContentElement;
+import com.oserion.framework.api.business.ITemplate;
+import com.oserion.framework.api.business.impl.mongo.ContentElement;
 
 //@Component
 public class JsoupTemplate implements ITemplate {

@@ -1,8 +1,8 @@
-package com.oserion.framework.api.interfaces;
+package com.oserion.framework.api.business;
 
 import org.springframework.stereotype.Component;
 
-import com.oserion.framework.api.mongo.ContentElement;
+import com.oserion.framework.api.business.impl.mongo.ContentElement;
 
 @Component
 public interface ITemplificator {
