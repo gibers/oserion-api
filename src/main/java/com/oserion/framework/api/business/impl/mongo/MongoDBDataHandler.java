@@ -5,6 +5,8 @@ import static com.mongodb.client.model.Filters.eq;
 import java.util.List;
 import java.util.Map;
 
+import com.oserion.framework.api.business.IPage;
+import com.oserion.framework.api.business.impl.bean.ContentElement;
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
@@ -23,8 +25,7 @@ public class MongoDBDataHandler implements IDataHandler {
 		this.database = mongoClient.getDatabase(nomBase);
 	}
 
-
-	public void insertOrUpdateTemplate(ITemplate template ) {
+	public boolean insertOrUpdateTemplate(ITemplate template ) {
 
 		MongoCollection<Document> collectionTemplate = database.getCollection("Template");
 
@@ -46,25 +47,24 @@ public class MongoDBDataHandler implements IDataHandler {
 			collectionTemplate.updateOne(doc, new Document("$set", nouveauDdoc));
 		}
 
-		insertOrUpdateManyContenue(template.getListTemplateElement());
-		insertOrUpdateManyContenue(template.getListVariableElement());
-		
+		insertOrUpdateManyContent(template.getListTemplateElement());
+        insertOrUpdateManyContent(template.getListVariableElement());
+
+		return false;
 	}
 
-
-	public void insertOrUpdateManyContenue(List<ContentElement> listElement) {
-		MongoCollection<Document> collectionContenu = database.getCollection("Contenu");
+	public boolean insertOrUpdateManyContent(List<ContentElement> listElement) {
 		for(ContentElement ele : listElement) {
-			insertOrUpdateContenue(ele);
+			insertOrUpdateContent(ele);
 		}
+		return false;
 	}
-	
 
-	public void insertOrUpdateContenue(ContentElement ele) {
+	public boolean insertOrUpdateContent(ContentElement ele) {
 		MongoCollection<Document> collectionContenu = database.getCollection("Contenu");
 		Document doc = new Document("ref", ele.getRef()).append("type" , ele.getType());
 		Document docComplet = new Document("ref", ele.getRef()).append("type" , ele.getType()).append("value", ele.getValue());
-		
+
 		if(collectionContenu.find(doc).first() != null) { // update
 			collectionContenu.updateMany(doc, new Document("$set", docComplet));
 			System.out.println("update contenue : " + ele.getRef() + " : " + ele.getType());
@@ -72,22 +72,46 @@ public class MongoDBDataHandler implements IDataHandler {
 			collectionContenu.insertOne(docComplet);
 			System.out.println("insertion de contenue : " + ele.getRef() + " : " + ele.getType());
 		}
+		return false;
 	}
 
-	
-	public String getTemplate(String nameTemplate) {
-		MongoCollection<Document> collectionTemplate = database.getCollection("Template");
-		Document doc = collectionTemplate.find(eq("name", nameTemplate)).first();
-		return doc.getString("html");
+	public boolean insertPageURL(String templateName, String URL) {
+		return false;
 	}
-	
 
-	/**
-	 * DEBUG
-	 */
-	public void afficheContenuBase() {
+	public boolean deletePageURL(String URL) {
+		return false;
+	}
+
+	public boolean deleteContent(String contentId, String contentType) {
+		return false;
+	}
+
+	public boolean deleteTemplate(String templateName) {
+		return false;
+	}
+
+	public String selectHTMLTemplate(String templateName) {
+        MongoCollection<Document> collectionTemplate = database.getCollection("Template");
+        Document doc = collectionTemplate.find(eq("name", templateName)).first();
+        return doc.getString("html");
+	}
+
+	public IPage selectFullPage(String Url) {
+		return null;
+	}
+
+	public List<ITemplate> selectTemplates(boolean withUrl, boolean withElements, boolean withHtml) {
+		return null;
+	}
+
+	public ContentElement selectContent(String contentId, String contentType) {
+		return null;
+	}
+
+	public void displayContentBase() {
 		MongoCollection<Document> collection = database.getCollection("collectionTest1");
-		System.out.println(collection.count());    	
+		System.out.println(collection.count());
 	}
 
 }

@@ -2,7 +2,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.oserion.framework.api.util.CentraleBean;
 import com.oserion.framework.api.Api418Facade;
-import com.oserion.framework.api.business.impl.mongo.ContentElement;
+import com.oserion.framework.api.business.impl.bean.ContentElement;
 
 /**
  * Hello world!

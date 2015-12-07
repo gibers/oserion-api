@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.ITemplificator;
-import com.oserion.framework.api.business.impl.mongo.ContentElement;
+import com.oserion.framework.api.business.impl.bean.ContentElement;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

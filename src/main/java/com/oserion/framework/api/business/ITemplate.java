@@ -3,7 +3,7 @@ package com.oserion.framework.api.business;
 import java.util.List;
 import java.util.Map;
 
-import com.oserion.framework.api.business.impl.mongo.ContentElement;
+import com.oserion.framework.api.business.impl.bean.ContentElement;
 
 public interface ITemplate {
 

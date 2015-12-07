@@ -4,18 +4,28 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.oserion.framework.api.business.impl.mongo.ContentElement;
+import com.oserion.framework.api.business.impl.bean.ContentElement;
 
 @Component
 public interface IDataHandler {
 
-	public void insertOrUpdateTemplate(ITemplate template);
-	public void insertOrUpdateManyContenue(List<ContentElement> listElement);
-	public void insertOrUpdateContenue(ContentElement ele);
-	public String getTemplate(String nameTemplate);
-	
-	
+	boolean insertOrUpdateTemplate(ITemplate template);
+	boolean insertOrUpdateManyContent(List<ContentElement> listElement);
+	boolean insertOrUpdateContent(ContentElement ele);
+	boolean insertPageURL(String templateName, String URL);
+
+	boolean deletePageURL(String URL);
+	boolean deleteContent(String contentId, String contentType);
+	boolean deleteTemplate(String templateName);
+
+	String selectHTMLTemplate(String templateName);
+
+	IPage selectFullPage(String Url);
+	List<ITemplate> selectTemplates(boolean withUrl, boolean withElements, boolean withHtml);
+	ContentElement selectContent(String contentId, String contentType);
+
+
 	/** DEBUG */
-	public void afficheContenuBase();
+	void displayContentBase();
 	
 }
