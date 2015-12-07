@@ -26,7 +26,7 @@ public class App  {
 		String retourTemplate = a418f.getHTMLPage(templateName);
 		System.out.println("retourTemplate => " + retourTemplate);
 
-		a418f.insertOrUpdateContenue("monid11", ContentElement.Type.EDITABLE.name(), "nouveau contenu" );
+		a418f.setContent("monid11", ContentElement.Type.EDITABLE.name(), "nouveau contenu" );
 		
 	}
 }

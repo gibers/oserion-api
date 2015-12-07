@@ -32,7 +32,7 @@ public class Api418Facade {
 	}
 
 	
-	public void insertOrUpdateContenue(String ref, String type, String contenue ) {
+	public void setContent(String ref, String type, String contenue ) {
 		ContentElement cte = ijst.majContenu(ref, type, contenue );
 		idh.insertOrUpdateContent(cte);
 	}
