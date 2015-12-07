@@ -1,13 +1,13 @@
-package com.oserion.framework.oserion.api.classes;
+package com.oserion.framework.api.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import com.oserion.framework.oserion.api.interfaces.IDataHandler;
-import com.oserion.framework.oserion.api.interfaces.ITemplate;
-import com.oserion.framework.oserion.api.interfaces.ITemplificator;
+import com.oserion.framework.api.interfaces.IDataHandler;
+import com.oserion.framework.api.interfaces.ITemplate;
+import com.oserion.framework.api.interfaces.ITemplificator;
 
 
 //@Configuration

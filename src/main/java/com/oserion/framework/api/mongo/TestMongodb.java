@@ -1,4 +1,4 @@
-package com.oserion.framework.oserion.api.classes;
+package com.oserion.framework.api.mongo;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;

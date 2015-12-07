@@ -1,8 +1,8 @@
-package com.oserion.framework.oserion.api.interfaces;
+package com.oserion.framework.api.interfaces;
 
 import java.util.List;
 
-import com.oserion.framework.oserion.api.classes.ContentElement;
+import com.oserion.framework.api.mongo.ContentElement;
 
 public interface ITemplate {
 

@@ -1,8 +1,8 @@
-package com.oserion.framework.oserion.api.classes;
+package com.oserion.framework.api.mongo;
 
 import org.springframework.stereotype.Component;
 
-import com.oserion.framework.oserion.api.interfaces.IDataHandler;
+import com.oserion.framework.api.interfaces.IDataHandler;
 
 //@Component
 public class MongoDBDataHandler implements IDataHandler {

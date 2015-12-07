@@ -1,4 +1,4 @@
-package com.oserion.framework.oserion.api.interfaces;
+package com.oserion.framework.api.interfaces;
 
 import org.springframework.stereotype.Component;
 

@@ -1,14 +1,14 @@
-package com.oserion.framework.oserion.api.configurationbeans;
+package com.oserion.framework.api.configurationbeans;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import com.oserion.framework.oserion.api.classes.Api418Facade;
-import com.oserion.framework.oserion.api.classes.JsoupTemplificator;
-import com.oserion.framework.oserion.api.classes.MongoDBDataHandler;
-import com.oserion.framework.oserion.api.interfaces.IDataHandler;
-import com.oserion.framework.oserion.api.interfaces.ITemplificator;
+import com.oserion.framework.api.implementation.Api418Facade;
+import com.oserion.framework.api.interfaces.IDataHandler;
+import com.oserion.framework.api.interfaces.ITemplificator;
+import com.oserion.framework.api.jsoup.JsoupTemplificator;
+import com.oserion.framework.api.mongo.MongoDBDataHandler;
 
 @Configuration
 @ComponentScan(basePackages={"com.oserion.framework.oserion.api.classes", "com.oserion.framework.oserion.api.interfaces"})

@@ -1,17 +1,18 @@
-package com.oserion.framework.oserion.api.classes;
+package com.oserion.framework.api.jsoup;
 
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.oserion.framework.api.interfaces.ITemplate;
+import com.oserion.framework.api.interfaces.ITemplificator;
+
 import org.jsoup.Jsoup;
 import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import com.oserion.framework.oserion.api.interfaces.ITemplate;
-import com.oserion.framework.oserion.api.interfaces.ITemplificator;
 
 //@Component
 public class JsoupTemplificator implements ITemplificator {

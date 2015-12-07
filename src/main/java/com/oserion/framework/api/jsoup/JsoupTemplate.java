@@ -1,10 +1,11 @@
-package com.oserion.framework.oserion.api.classes;
+package com.oserion.framework.api.jsoup;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.oserion.framework.oserion.api.interfaces.ITemplate;
+import com.oserion.framework.api.interfaces.ITemplate;
+import com.oserion.framework.api.mongo.ContentElement;
 
 //@Component
 public class JsoupTemplate implements ITemplate {

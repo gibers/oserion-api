@@ -1,5 +1,3 @@
-package com.oserion.framework.oserion.api.classes;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +15,13 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.oserion.framework.oserion.api.configurationbeans.CentraleBean;
+import com.oserion.framework.api.configurationbeans.CentraleBean;
+import com.oserion.framework.api.implementation.Api418Facade;
 
 /**
  * Hello world!
  *
  */
-
 public class App  {
 	
 	public static void main( String[] args ) {
