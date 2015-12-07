@@ -2,7 +2,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.oserion.framework.api.util.CentraleBean;
 import com.oserion.framework.api.Api418Facade;
-import com.oserion.framework.api.business.impl.bean.ContentElement;
+import com.oserion.framework.api.business.beans.ContentElement;
 
 /**
  * Hello world!
@@ -26,7 +26,7 @@ public class App  {
 		String retourTemplate = a418f.getHTMLPage(templateName);
 		System.out.println("retourTemplate => " + retourTemplate);
 
-		a418f.setContent("monid11", ContentElement.Type.EDITABLE.name(), "nouveau contenu" );
+		a418f.setContent("monid11", ContentElement.Type.EDITABLE.name(), "nouveau contenu");
 		
 	}
 }

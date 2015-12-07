@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.oserion.framework.api.business.impl.bean.ContentElement;
+import com.oserion.framework.api.business.beans.ContentElement;
 
 @Component
 public interface IDataHandler {

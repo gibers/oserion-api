@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.ITemplificator;
-import com.oserion.framework.api.business.impl.bean.ContentElement;
+import com.oserion.framework.api.business.beans.ContentElement;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,8 +20,8 @@ public class JsoupTemplificator implements ITemplificator {
 //	private ITemplate template = null;
 	
 	
-	public ContentElement majContenu(String ref, String type, String contenue) {
-		ContentElement cte = new ContentElement(ref, ContentElement.Type.valueOf(type), contenue);
+	public ContentElement majContenu(ContentElement e) {
+		ContentElement cte = new ContentElement(e.getRef(), ContentElement.Type.valueOf(e.getType()), e.getValue());
 		return cte; 
 	}
 	

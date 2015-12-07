@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.oserion.framework.api.business.IPage;
-import com.oserion.framework.api.business.impl.bean.ContentElement;
+import com.oserion.framework.api.business.beans.ContentElement;
 import org.bson.Document;
 
 import com.mongodb.MongoClient;

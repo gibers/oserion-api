@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.oserion.framework.api.business.IDataHandler;
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.ITemplificator;
-import com.oserion.framework.api.business.impl.bean.ContentElement;
+import com.oserion.framework.api.business.beans.ContentElement;
 
 
 //@Configuration
@@ -32,8 +32,8 @@ public class Api418Facade {
 	}
 
 	
-	public void setContent(String ref, String type, String contenue ) {
-		ContentElement cte = ijst.majContenu(ref, type, contenue );
+	public void setContent(ContentElement e) {
+		ContentElement cte = ijst.majContenu(e);
 		idh.insertOrUpdateContent(cte);
 	}
 

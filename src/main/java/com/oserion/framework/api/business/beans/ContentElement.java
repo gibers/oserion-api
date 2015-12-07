@@ -1,4 +1,4 @@
-package com.oserion.framework.api.business.impl.bean;
+package com.oserion.framework.api.business.beans;
 
 public class ContentElement {
 	
