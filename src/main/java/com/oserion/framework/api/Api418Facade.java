@@ -1,5 +1,7 @@
 package com.oserion.framework.api;
 
+import com.oserion.framework.api.business.IDBConnection;
+import com.oserion.framework.api.util.OserionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +15,18 @@ import com.oserion.framework.api.business.impl.jsoup.JsoupTemplificator;
 import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 
 
-//@ComponentScan(basePackages={"com.oserion.framework.api.business","com.oserion.framework.api.business.impl.mongo", "com.oserion.framework.api.business.impl.jsoup"})
 public class Api418Facade {
 	
 	@Autowired
-	public ITemplificator ijst = null;
-	
-	@Autowired
-	public IDataHandler idh = null;
-	
-	
+	private ITemplificator ijst;
+	private IDataHandler idh;
+	private OserionBuilder builder;
+
+	public Api418Facade(IDBConnection c){
+		this.builder = new OserionBuilder();
+		this.idh = this.builder.buildDataHandler(c);
+	}
+
 	public String uploadTemplateFromHtml( String fluxTemplate, String templateName ) {
 		ITemplate template1 = ijst.createTemplateFromHTML(fluxTemplate, templateName);
 		idh.insertOrUpdateTemplate(template1);
@@ -41,12 +45,5 @@ public class Api418Facade {
 		idh.insertOrUpdateContent(cte);
 	}
 
-	//String getHTMLPage(String URL);
-	
-//	public void aficheDonne() {
-//		System.out.println(ijst.createTemplateFromHTML("sting1", "string2"));
-//		System.out.println(idh.insertOrUpdateTemplate("template1"));
-//		
-//	}
 	
 }

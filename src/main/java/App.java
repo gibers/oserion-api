@@ -1,7 +1,7 @@
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.oserion.framework.api.Api418Facade;
-import com.oserion.framework.api.util.CentraleBean;
+import com.oserion.framework.api.util.OserionBuilder;
 
 /**
  * Hello world!
@@ -14,7 +14,7 @@ public class App  {
 
 //    	ApplicationContext  context = new ClassPathXmlApplicationContext("oserion-spring.xml");
 
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CentraleBean.class);
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(OserionBuilder.class);
 		Api418Facade a418f = context.getBean(Api418Facade.class);
 		
 		

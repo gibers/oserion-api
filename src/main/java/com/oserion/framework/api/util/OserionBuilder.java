@@ -1,34 +1,32 @@
 package com.oserion.framework.api.util;
 
+import com.oserion.framework.api.business.IDBConnection;
+import com.oserion.framework.api.business.impl.mongo.MongoDBConnection;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import com.oserion.framework.api.Api418Facade;
 import com.oserion.framework.api.business.IDataHandler;
 import com.oserion.framework.api.business.ITemplificator;
 import com.oserion.framework.api.business.impl.jsoup.JsoupTemplificator;
 import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 
 @Configuration
-//@ComponentScan(basePackages={"com.oserion.framework.api.business.interfaces"})
-public class CentraleBean {
+public class OserionBuilder {
 	
 	@Bean
-	public ITemplificator Iitemplificator() {
+	public ITemplificator buildTemplificator() {
 		return new JsoupTemplificator();
-	}
-	
-	@Bean
-	public IDataHandler idataHandler() {
-		return new MongoDBDataHandler(/* "localhost", 27017, "oserionBD" */);
 	}
 
 	@Bean
-	public Api418Facade api418Facade() {
-		return new Api418Facade();
+	public IDBConnection buildDBConnection() {
+		return new MongoDBConnection();
 	}
 	
+	public IDataHandler buildDataHandler(IDBConnection connection) {
+		return new MongoDBDataHandler(connection);
+	}
+
 }
 
 
