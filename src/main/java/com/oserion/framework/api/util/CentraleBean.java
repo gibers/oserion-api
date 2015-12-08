@@ -11,7 +11,7 @@ import com.oserion.framework.api.business.impl.jsoup.JsoupTemplificator;
 import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 
 @Configuration
-@ComponentScan(basePackages={"com.oserion.framework.api.business.interfaces"})
+//@ComponentScan(basePackages={"com.oserion.framework.api.business.interfaces"})
 public class CentraleBean {
 	
 	@Bean
@@ -21,7 +21,7 @@ public class CentraleBean {
 	
 	@Bean
 	public IDataHandler idataHandler() {
-		return new MongoDBDataHandler("localhost", 27017, "oserionBD");
+		return new MongoDBDataHandler(/* "localhost", 27017, "oserionBD" */);
 	}
 
 	@Bean
@@ -29,22 +29,8 @@ public class CentraleBean {
 		return new Api418Facade();
 	}
 	
-	
-	/**
-	 * les beans de la bdd 
-	 * @return
-	 */
-//	@Bean
-//	public MongoClient getConn() {
-//		return new MongoClient( "localhost" , 27017 );
-//	}
-	
-	
 }
 
 
-
-//MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
-//MongoDatabase database = mongoClient.getDatabase("oserionBD");
 
 

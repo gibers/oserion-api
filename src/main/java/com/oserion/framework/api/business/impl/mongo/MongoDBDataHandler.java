@@ -8,6 +8,8 @@ import java.util.Map;
 import com.oserion.framework.api.business.IPage;
 import com.oserion.framework.api.business.beans.ContentElement;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -15,14 +17,15 @@ import com.mongodb.client.MongoDatabase;
 import com.oserion.framework.api.business.IDataHandler;
 import com.oserion.framework.api.business.ITemplate;
 
-
+//@Component
 public class MongoDBDataHandler implements IDataHandler {
 
 	private MongoDatabase database ;
 
-	public MongoDBDataHandler(String adresseMachine, int port, String nomBase) {
-		MongoClient mongoClient = new MongoClient( adresseMachine , port );
-		this.database = mongoClient.getDatabase(nomBase);
+	
+	public MongoDBDataHandler(/* String adresseMachine, int port, String nomBase */ ) {
+		MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+		this.database = mongoClient.getDatabase("oserionBD");
 	}
 
 	public boolean insertOrUpdateTemplate(ITemplate template ) {

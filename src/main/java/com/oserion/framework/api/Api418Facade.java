@@ -1,15 +1,19 @@
 package com.oserion.framework.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import com.oserion.framework.api.business.IDataHandler;
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.ITemplificator;
 import com.oserion.framework.api.business.beans.ContentElement;
+import com.oserion.framework.api.business.impl.jsoup.JsoupTemplificator;
+import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 
 
-//@Configuration
-//@ComponentScan(basePackages={"com.oserion.framework.oserion.api.classes", "com.oserion.framework.oserion.api.interfaces"})
+//@ComponentScan(basePackages={"com.oserion.framework.api.business","com.oserion.framework.api.business.impl.mongo", "com.oserion.framework.api.business.impl.jsoup"})
 public class Api418Facade {
 	
 	@Autowired
