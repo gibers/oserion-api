@@ -45,5 +45,9 @@ public class Api418Facade {
 		idh.insertOrUpdateContent(cte);
 	}
 
+	public boolean addPageUrl(String templateName, String url){
+		return idh.insertPageURL(templateName,url);
+	}
+
 	
 }

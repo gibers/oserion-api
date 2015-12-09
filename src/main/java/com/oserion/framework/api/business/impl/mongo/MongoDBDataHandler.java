@@ -18,6 +18,8 @@ import com.oserion.framework.api.business.ITemplate;
 //@Component
 public class MongoDBDataHandler implements IDataHandler {
 
+	private final String MONGO_COLLECTION_TEMPLATE = "Template";
+
 	private MongoDatabase database;
 
 	public MongoDBDataHandler(IDBConnection c) {
@@ -76,6 +78,13 @@ public class MongoDBDataHandler implements IDataHandler {
 	}
 
 	public boolean insertPageURL(String templateName, String URL) {
+		Object o =
+			database.getCollection(MONGO_COLLECTION_TEMPLATE).updateOne(
+				new Document("name", templateName), //SELECTOR
+				new Document("$addToSet", //ACTION
+						new Document("listUrl", //FIELD
+								URL))); //VALUE {id:uniqueid, url:URL}
+
 		return false;
 	}
 
@@ -92,7 +101,7 @@ public class MongoDBDataHandler implements IDataHandler {
 	}
 
 	public String selectHTMLTemplate(String templateName) {
-        MongoCollection<Document> collectionTemplate = database.getCollection("Template");
+        MongoCollection<Document> collectionTemplate = database.getCollection(MONGO_COLLECTION_TEMPLATE);
         Document doc = collectionTemplate.find(eq("name", templateName)).first();
         return doc.getString("html");
 	}
