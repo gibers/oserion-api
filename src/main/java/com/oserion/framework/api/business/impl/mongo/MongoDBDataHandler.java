@@ -2,18 +2,19 @@ package com.oserion.framework.api.business.impl.mongo;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.oserion.framework.api.business.IDBConnection;
-import com.oserion.framework.api.business.IPage;
-import com.oserion.framework.api.business.beans.ContentElement;
 import org.bson.Document;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.oserion.framework.api.business.IDBConnection;
 import com.oserion.framework.api.business.IDataHandler;
+import com.oserion.framework.api.business.IPage;
 import com.oserion.framework.api.business.ITemplate;
+import com.oserion.framework.api.business.beans.ContentElement;
 
 //@Component
 public class MongoDBDataHandler implements IDataHandler {
@@ -33,14 +34,14 @@ public class MongoDBDataHandler implements IDataHandler {
 
 		Map<String, Object> listTypeEtRefFixe = template.listTemplateMap(template.getListTemplateElement());
 		Map<String, Object> listTypeEtRefVariable = template.listTemplateMap(template.getListVariableElement());
-		
+
 		Document doc = collectionTemplate.find(eq("name", template.getName())).first();
-		
+
 		Document nouveauDdoc = new Document("name", template.getName())
-				.append("html", template.getHtml())
-				.append("listTemplateElement", new Document(listTypeEtRefFixe))
-				.append("listVariableElement", new Document(listTypeEtRefVariable));
-		
+		.append("html", template.getHtml())
+		.append("listTemplateElement", new Document(listTypeEtRefFixe))
+		.append("listVariableElement", new Document(listTypeEtRefVariable));
+
 		if(doc == null) { // insertion
 			System.out.println("insertion du template : " + template.getName());
 			collectionTemplate.insertOne(nouveauDdoc);
@@ -50,7 +51,7 @@ public class MongoDBDataHandler implements IDataHandler {
 		}
 
 		insertOrUpdateManyContent(template.getListTemplateElement());
-        insertOrUpdateManyContent(template.getListVariableElement());
+		insertOrUpdateManyContent(template.getListVariableElement());
 
 		return false;
 	}
@@ -78,13 +79,51 @@ public class MongoDBDataHandler implements IDataHandler {
 	}
 
 	public boolean insertPageURL(String templateName, String URL) {
-		Object o =
-			database.getCollection(MONGO_COLLECTION_TEMPLATE).updateOne(
-				new Document("name", templateName), //SELECTOR
-				new Document("$addToSet", //ACTION
-						new Document("listUrl", //FIELD
-								URL))); //VALUE {id:uniqueid, url:URL}
 
+		MongoCollection<Document> collectionTemplate = database.getCollection(MONGO_COLLECTION_TEMPLATE);
+
+		// we get the first template from his name.
+		Document doc = collectionTemplate.find(new Document("name", templateName)).first();
+
+		// We get his URL field 
+		//		Map<Integer, String> monMap = new HashMap<Integer, String>();
+
+		boolean urlInBase = false;
+		List<Document> docListUrl = (List<Document>) doc.get("listUrl");
+		if(docListUrl == null) 
+			docListUrl = new ArrayList<Document>();
+		else 
+			for(Document d : docListUrl) {
+				if(d.getString("url").equalsIgnoreCase(URL)) {
+					urlInBase = true;
+				}
+			}
+		
+		if(!urlInBase) { // insert URL in Template
+			Document nouveauUrl = new Document("key", 5).append("url", URL );
+			docListUrl.add(nouveauUrl);
+			Document newDoc = new Document("name", templateName).append( "listUrl", nouveauUrl );
+			collectionTemplate.updateOne(doc , new Document("$set", newDoc ));
+			System.out.println("les pages ne sont pas nulls");
+		} else { // URL already in Template.
+			System.out.println("les pages SONT nulls");
+		}
+
+		//		if(!monMap.containsValue(URL)) { // insert the URL
+		//			monMap.put(5, URL);
+		//			Document docWithUrl = new Document("listUrl", monMap);
+		//			collectionTemplate.updateOne(doc, new Document("$set", docWithUrl));
+		//		} else {
+		//			System.out.println("");
+		//		}
+
+
+		//		Object o = database.getCollection(MONGO_COLLECTION_TEMPLATE).updateOne(
+		//				new Document("name", templateName), //SELECTOR
+		//				new Document("$addToSet", //ACTION
+		//						new Document("listUrl", //FIELD
+		//								URL))); //VALUE {id:uniqueid, url:URL}
+		//
 		return false;
 	}
 
@@ -101,9 +140,9 @@ public class MongoDBDataHandler implements IDataHandler {
 	}
 
 	public String selectHTMLTemplate(String templateName) {
-        MongoCollection<Document> collectionTemplate = database.getCollection(MONGO_COLLECTION_TEMPLATE);
-        Document doc = collectionTemplate.find(eq("name", templateName)).first();
-        return doc.getString("html");
+		MongoCollection<Document> collectionTemplate = database.getCollection(MONGO_COLLECTION_TEMPLATE);
+		Document doc = collectionTemplate.find(eq("name", templateName)).first();
+		return doc.getString("html");
 	}
 
 	public IPage selectFullPage(String Url) {
