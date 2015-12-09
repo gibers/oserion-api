@@ -22,7 +22,7 @@ public class MongoDBDataHandler implements IDataHandler {
 
 	public MongoDBDataHandler(IDBConnection c) {
 
-		this.database = (MongoDatabase) ((MongoDBConnection) c).getDatabase();
+		this.database = (MongoDatabase) c.getDatabase();
 	}
 
 	public boolean insertOrUpdateTemplate(ITemplate template ) {
