@@ -2,6 +2,7 @@ package com.oserion.framework.api;
 
 import com.oserion.framework.api.business.IDBConnection;
 import com.oserion.framework.api.util.OserionBuilder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 
 public class Api418Facade {
 	
-	@Autowired
+//	@Autowired
 	private ITemplificator ijst;
 	private IDataHandler idh;
 	private OserionBuilder builder;
@@ -25,6 +26,7 @@ public class Api418Facade {
 	public Api418Facade(IDBConnection c){
 		this.builder = new OserionBuilder();
 		this.idh = this.builder.buildDataHandler(c);
+		this.ijst = new JsoupTemplificator();
 	}
 
 	public String uploadTemplateFromHtml( String fluxTemplate, String templateName ) {
