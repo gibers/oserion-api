@@ -1,4 +1,4 @@
-package com.oserion.framework.api.business.impl.jsoup;
+	package com.oserion.framework.api.business.impl.jsoup;
 
 import java.util.Iterator;
 

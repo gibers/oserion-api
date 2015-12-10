@@ -21,7 +21,7 @@ public class App  {
 
 //    	ApplicationContext  context = new ClassPathXmlApplicationContext("oserion-spring.xml");
 
-//		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(OserionBuilder.class);
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(OserionBuilder.class);
 		
 //		Api418Facade a418f = context.getBean(Api418Facade.class);
 		
@@ -35,12 +35,14 @@ public class App  {
 		String fluxTemplate = "<div><div id='monid1' class='bernard editable'>ceci est du <p>texte</p> </div><div id='monid2_ref:page' class='bernard editable'>ceci est un autre <p>texte</p> </div></div>";
 		String templateName = "premierTemplate";
 		
-		facade.uploadTemplateFromHtml(fluxTemplate, templateName);
-		
 //		facade.uploadTemplateFromHtml(fluxTemplate, templateName);
 		
-		String retourTemplate = facade.getHTMLPage(templateName);
-		System.out.println("retourTemplate => " + retourTemplate);
+		facade.selectTemplate("premierTemplate");
+		
+//		facade.addPageUrl(templateName, "tototo1");
+		
+//		String retourTemplate = facade.getHTMLPage(templateName);
+//		System.out.println("retourTemplate => " + retourTemplate);
 
 //		a418f.setContent("monid11", ContentElement.Type.EDITABLE.name(), "nouveau contenu");
 		

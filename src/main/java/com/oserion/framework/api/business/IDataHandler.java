@@ -21,7 +21,7 @@ public interface IDataHandler {
 	String selectHTMLTemplate(String templateName);
 
 	IPage selectFullPage(String Url);
-	List<ITemplate> selectTemplates(boolean withUrl, boolean withElements, boolean withHtml);
+	List<ITemplate> selectTemplates(String templateName, boolean withUrl, boolean withElements, boolean withHtml);
 	ContentElement selectContent(String contentId, String contentType);
 
 

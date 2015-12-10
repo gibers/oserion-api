@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -15,8 +17,10 @@ import com.oserion.framework.api.business.IDataHandler;
 import com.oserion.framework.api.business.IPage;
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.beans.ContentElement;
+import com.oserion.framework.api.business.impl.beansDB.Template;
 
 //@Component
+@EnableMongoRepositories
 public class MongoDBDataHandler implements IDataHandler {
 
 	private final String MONGO_COLLECTION_TEMPLATE = "Template";
@@ -148,8 +152,14 @@ public class MongoDBDataHandler implements IDataHandler {
 	public IPage selectFullPage(String Url) {
 		return null;
 	}
+	
 
-	public List<ITemplate> selectTemplates(boolean withUrl, boolean withElements, boolean withHtml) {
+	@Autowired
+	private TemplateRepository repository;
+	public List<ITemplate> selectTemplates(String tamplateName, boolean withUrl, boolean withElements, boolean withHtml) {
+		
+		Template template = repository.findByName(tamplateName);
+		System.out.println(template.getHtml());
 		return null;
 	}
 
@@ -161,6 +171,7 @@ public class MongoDBDataHandler implements IDataHandler {
 		MongoCollection<Document> collection = database.getCollection("collectionTest1");
 		System.out.println(collection.count());
 	}
+
 
 }
 
