@@ -13,21 +13,22 @@ import com.oserion.framework.api.business.impl.jsoup.JsoupTemplificator;
 import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 
 @Configuration
-@EnableMongoRepositories
+//@EnableMongoRepositories
 public class OserionBuilder {
 	
-//	@Bean
+	@Bean
 	public ITemplificator buildTemplificator() {
 		return new JsoupTemplificator();
 	}
 
-//	@Bean
+	@Bean
 	public IDBConnection buildDBConnection() {
-		return new MongoDBConnection();
+		return MongoDBConnection.getInstance();
 	}
-	
-	public IDataHandler buildDataHandler(IDBConnection connection) {
-		return new MongoDBDataHandler(connection);
+
+	@Bean
+	public IDataHandler buildDataHandler() {
+		return new MongoDBDataHandler();
 	}
 
 }

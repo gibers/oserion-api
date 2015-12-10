@@ -18,8 +18,9 @@ import com.oserion.framework.api.business.IPage;
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.impl.beansDB.Template;
+import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 @EnableMongoRepositories
 public class MongoDBDataHandler implements IDataHandler {
 
@@ -27,9 +28,9 @@ public class MongoDBDataHandler implements IDataHandler {
 
 	private MongoDatabase database;
 
-	public MongoDBDataHandler(IDBConnection c) {
+	public MongoDBDataHandler() {
 
-		this.database = (MongoDatabase) c.getDatabase();
+		this.database = (MongoDatabase) MongoDBConnection.getInstance().getDatabase();
 	}
 
 	public boolean insertOrUpdateTemplate(ITemplate template ) {
@@ -87,19 +88,20 @@ public class MongoDBDataHandler implements IDataHandler {
 		MongoCollection<Document> collectionTemplate = database.getCollection(MONGO_COLLECTION_TEMPLATE);
 
 		// we get the first template from his name.
-		Document doc = collectionTemplate.find(new Document("name", templateName)).first();
+		Document doc = collectionTemplate.find(eq("name", templateName)).first();
 
-		// We get his URL field 
-		//		Map<Integer, String> monMap = new HashMap<Integer, String>();
-
+		// we get the URL field
 		boolean urlInBase = false;
 		List<Document> docListUrl = (List<Document>) doc.get("listUrl");
-		if(docListUrl == null) 
+		if(docListUrl == null) {
 			docListUrl = new ArrayList<Document>();
+			docListUrl.add(new Document("key", 5).append("url", URL ));
+		}
 		else 
 			for(Document d : docListUrl) {
 				if(d.getString("url").equalsIgnoreCase(URL)) {
-					urlInBase = true;
+					docListUrl.remove(d);
+					docListUrl.add(new Document("key", 5).append("url", URL ));
 				}
 			}
 		
@@ -154,7 +156,7 @@ public class MongoDBDataHandler implements IDataHandler {
 	}
 	
 
-	@Autowired
+	//@Autowired
 	private TemplateRepository repository;
 	public List<ITemplate> selectTemplates(String tamplateName, boolean withUrl, boolean withElements, boolean withHtml) {
 		

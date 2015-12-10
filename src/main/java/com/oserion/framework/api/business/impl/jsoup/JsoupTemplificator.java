@@ -12,7 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class JsoupTemplificator implements ITemplificator {
 
 	public String texte = "texte";

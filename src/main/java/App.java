@@ -29,7 +29,7 @@ public class App  {
 		System.getProperties().load(configFile);
 		
 		IDBConnection idbc = new OserionBuilder().buildDBConnection();
-        Api418Facade facade = new Api418Facade(idbc);
+       /* Api418Facade facade = new Api418Facade(idbc);
         
 		
 		String fluxTemplate = "<div><div id='monid1' class='bernard editable'>ceci est du <p>texte</p> </div><div id='monid2_ref:page' class='bernard editable'>ceci est un autre <p>texte</p> </div></div>";
@@ -45,7 +45,7 @@ public class App  {
 //		System.out.println("retourTemplate => " + retourTemplate);
 
 //		a418f.setContent("monid11", ContentElement.Type.EDITABLE.name(), "nouveau contenu");
-		
+		*/
 	}
 	
 }

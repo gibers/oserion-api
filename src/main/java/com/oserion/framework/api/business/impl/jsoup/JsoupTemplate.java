@@ -7,8 +7,9 @@ import java.util.Map;
 
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.beans.ContentElement;
+import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class JsoupTemplate implements ITemplate {
 	
 	private String name = null;
