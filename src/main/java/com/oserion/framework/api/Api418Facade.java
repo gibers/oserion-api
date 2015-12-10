@@ -5,12 +5,14 @@ import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.ITemplificator;
 import com.oserion.framework.api.business.beans.ContentElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class Api418Facade {
 
 	@Autowired
 	private ITemplificator ijst;
+
 	@Autowired
 	private IDataHandler idh;
 
@@ -37,5 +39,20 @@ public class Api418Facade {
 		return idh.insertPageURL(templateName, url);
 	}
 
+	public ITemplificator getIjst() {
+		return ijst;
+	}
+
+	public void setIjst(ITemplificator ijst) {
+		this.ijst = ijst;
+	}
+
+	public IDataHandler getIdh() {
+		return idh;
+	}
+
+	public void setIdh(IDataHandler idh) {
+		this.idh = idh;
+	}
 	
 }

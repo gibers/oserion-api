@@ -1,5 +1,6 @@
 package com.oserion.framework.api.util;
 
+import com.oserion.framework.api.Api418Facade;
 import com.oserion.framework.api.business.IDBConnection;
 import com.oserion.framework.api.business.impl.mongo.MongoDBConnection;
 
@@ -29,6 +30,11 @@ public class OserionBuilder {
 	@Bean
 	public IDataHandler buildDataHandler() {
 		return new MongoDBDataHandler();
+	}
+
+	@Bean
+	public Api418Facade buildApi418Facade() {
+		return new Api418Facade();
 	}
 
 }
