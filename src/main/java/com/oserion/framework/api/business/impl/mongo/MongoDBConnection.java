@@ -17,7 +17,6 @@ public class MongoDBConnection implements IDBConnection {
 	private MongoDatabase database;
 
 	private MongoDBConnection() {
-
 		MongoClient mongoClient = new MongoClient(System.getProperty(PROPERTY_DB_HOST),
 				Integer.parseInt(System.getProperty(PROPERTY_DB_PORT)));
 		this.database = mongoClient.getDatabase(System.getProperty(PROPERTY_DB_SCHEMA));

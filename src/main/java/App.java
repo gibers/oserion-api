@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoOperations;
 
 import com.oserion.framework.api.Api418Facade;
 import com.oserion.framework.api.business.IDBConnection;
@@ -21,14 +22,21 @@ public class App  {
 
 //    	ApplicationContext  context = new ClassPathXmlApplicationContext("oserion-spring.xml");
 
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(OserionBuilder.class);
-		
-//		Api418Facade a418f = context.getBean(Api418Facade.class);
-		
 		FileInputStream configFile = new FileInputStream(System.getProperty(App.PROPERTY_CONFIG_PATH));
 		System.getProperties().load(configFile);
+
+		System.out.println(System.getProperty("database.host"));
 		
-		IDBConnection idbc = new OserionBuilder().buildDBConnection();
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(OserionBuilder.class);
+		
+		Api418Facade a418f = context.getBean(Api418Facade.class);
+		System.out.println(a418f.getIdh().toString());
+		System.out.println(a418f.getIjst().toString());
+		
+		MongoOperations mongoOperation = (MongoOperations) context.getBean("mongoTemplate");
+		
+		
+//		IDBConnection idbc = new OserionBuilder().buildDBConnection();
        /* Api418Facade facade = new Api418Facade(idbc);
         
 		

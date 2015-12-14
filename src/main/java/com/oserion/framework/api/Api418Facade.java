@@ -4,8 +4,13 @@ import com.oserion.framework.api.business.IDataHandler;
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.ITemplificator;
 import com.oserion.framework.api.business.beans.ContentElement;
+import com.oserion.framework.api.business.impl.mongo.TemplateRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class Api418Facade {
@@ -15,7 +20,12 @@ public class Api418Facade {
 
 	@Autowired
 	private IDataHandler idh;
+	
+//	@Autowired 
+//	private TemplateRepository temrepo;
 
+//	@Autowired
+//	private MongoTemplate mongoTemplate;
 
 	public String uploadTemplateFromHtml( String fluxTemplate, String templateName ) {
 		ITemplate template1 = ijst.createTemplateFromHTML(fluxTemplate, templateName);

@@ -8,6 +8,9 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.client.MongoCollection;
@@ -18,11 +21,12 @@ import com.oserion.framework.api.business.IPage;
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.impl.beansDB.Template;
+
 import org.springframework.stereotype.Component;
 
 @Component
 @EnableMongoRepositories
-public class MongoDBDataHandler implements IDataHandler {
+public class MongoDBDataHandler implements IDataHandler, TemplateRepository {
 
 	private final String MONGO_COLLECTION_TEMPLATE = "Template";
 
@@ -172,6 +176,102 @@ public class MongoDBDataHandler implements IDataHandler {
 	public void displayContentBase() {
 		MongoCollection<Document> collection = database.getCollection("collectionTest1");
 		System.out.println(collection.count());
+	}
+
+	@Override
+	public List<Template> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Template> findAll(Sort arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Template> S insert(S arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Template> List<S> insert(Iterable<S> arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Template> List<S> save(Iterable<S> arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page<Template> findAll(Pageable arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long count() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void delete(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Template arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Iterable<? extends Template> arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean exists(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterable<Template> findAll(Iterable<String> arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Template findOne(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Template> S save(S arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Template findByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
