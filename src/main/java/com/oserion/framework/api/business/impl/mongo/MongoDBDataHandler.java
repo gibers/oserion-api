@@ -26,16 +26,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableMongoRepositories
-public class MongoDBDataHandler implements IDataHandler, TemplateRepository {
+public class MongoDBDataHandler implements IDataHandler {
 
 	private final String MONGO_COLLECTION_TEMPLATE = "Template";
 
+	@Autowired
 	private MongoDatabase database;
+	
+	@Autowired
+	private TemplateRepository templateR;
 
-	public MongoDBDataHandler() {
-
-		this.database = (MongoDatabase) MongoDBConnection.getInstance().getDatabase();
-	}
+//	public MongoDBDataHandler() {
+//		this.database = (MongoDatabase) MongoDBConnection.getInstance().getDatabase();
+//	}
 
 	public boolean insertOrUpdateTemplate(ITemplate template ) {
 
@@ -160,11 +163,8 @@ public class MongoDBDataHandler implements IDataHandler, TemplateRepository {
 	}
 	
 
-	//@Autowired
-	private TemplateRepository repository;
-	public List<ITemplate> selectTemplates(String tamplateName, boolean withUrl, boolean withElements, boolean withHtml) {
-		
-		Template template = repository.findByName(tamplateName);
+	public List<ITemplate> selectTemplates(String tamplateName, boolean withUrl, boolean withElements, boolean withHtml) {		
+		Template template = templateR.findByName(tamplateName);
 		System.out.println(template.getHtml());
 		return null;
 	}
@@ -178,101 +178,15 @@ public class MongoDBDataHandler implements IDataHandler, TemplateRepository {
 		System.out.println(collection.count());
 	}
 
-	@Override
-	public List<Template> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Template> findAll(Sort arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends Template> S insert(S arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends Template> List<S> insert(Iterable<S> arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends Template> List<S> save(Iterable<S> arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Page<Template> findAll(Pageable arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void delete(String arg0) {
-		// TODO Auto-generated method stub
+	
+	public void jbcSaveTemplate(String html) {
+		Template t1 = new Template();
+		t1.setName("nouveaut");
+		t1.setHtml(html);
 		
+		templateR.sav
 	}
 
-	@Override
-	public void delete(Template arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(Iterable<? extends Template> arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteAll() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean exists(String arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterable<Template> findAll(Iterable<String> arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Template findOne(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends Template> S save(S arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Template findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 }

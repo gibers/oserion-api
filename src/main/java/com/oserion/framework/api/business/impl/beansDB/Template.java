@@ -2,6 +2,7 @@ package com.oserion.framework.api.business.impl.beansDB;
 
 import org.springframework.data.annotation.Id;
 
+
 public class Template {
 
 	@Id

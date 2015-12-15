@@ -34,7 +34,11 @@ public class App  {
 		System.out.println(a418f.getIjst().toString());
 				
 		MongoOperations mongoOperation = (MongoOperations) context.getBean("mongoTemplate");
+
 		
+		
+		a418f.saveTemplate(mongoOperation);
+				
 		
 //		IDBConnection idbc = new OserionBuilder().buildDBConnection();
        /* Api418Facade facade = new Api418Facade(idbc);
