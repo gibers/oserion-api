@@ -32,7 +32,7 @@ public class App  {
 		Api418Facade a418f = context.getBean(Api418Facade.class);
 		System.out.println(a418f.getIdh().toString());
 		System.out.println(a418f.getIjst().toString());
-		
+				
 		MongoOperations mongoOperation = (MongoOperations) context.getBean("mongoTemplate");
 		
 		
