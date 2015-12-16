@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JsoupTemplificator implements ITemplificator {
+public class JsoupTemplificator /*implements ITemplificator*/ {
 
 	public String texte = "texte";
 	
@@ -22,12 +22,13 @@ public class JsoupTemplificator implements ITemplificator {
 	
 	
 	public ContentElement majContenu(ContentElement e) {
-		ContentElement cte = new ContentElement(e.getRef(), ContentElement.Type.valueOf(e.getType()), e.getValue());
+		ContentElement cte = new ContentElement(e.getRef(), e.getType() , e.getValue());
+//		ContentElement cte = new ContentElement(e.getRef(), ContentElement.Type.valueOf(e.getType()), e.getValue());
 		return cte; 
 	}
 	
-	public ITemplate createTemplateFromHTML(String fluxTemplate, String templateName) {
-		ITemplate template = new JsoupTemplate(templateName);
+	public JsoupTemplate createTemplateFromHTML(String fluxTemplate, String templateName) {
+		JsoupTemplate template = new JsoupTemplate(templateName);
 		template.setHtml(fluxTemplate);
 		splitContenu(fluxTemplate, template);
 		
@@ -45,7 +46,7 @@ public class JsoupTemplificator implements ITemplificator {
 	 * @param fluxTemplate
 	 * @param template
 	 */
-	private void splitContenu(String fluxTemplate, ITemplate template ) {
+	public void splitContenu(String fluxTemplate, JsoupTemplate template ) {
 		Document docJsoup = Jsoup.parse(fluxTemplate);
 		Elements ele = docJsoup.select(".editable");
 		System.out.println("taille ele => " + ele.size());
@@ -54,10 +55,10 @@ public class JsoupTemplificator implements ITemplificator {
 		while(it.hasNext()) {
 			Element balise = it.next();
 			if(balise.id().contains("ref:")) {
-				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE , balise.html());
+				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE.toString() , balise.html());
 				template.getListVariableElement().add(cte);
 			} else if (!balise.id().isEmpty()) {
-				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE , balise.html());
+				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE.toString() , balise.html());
 				template.getListTemplateElement().add(cte);
 			}
 		}

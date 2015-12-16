@@ -1,12 +1,16 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import com.oserion.framework.api.Api418Facade;
 import com.oserion.framework.api.business.IDBConnection;
+import com.oserion.framework.api.business.impl.beansDB.Template;
 import com.oserion.framework.api.util.OserionBuilder;
 
 /**
@@ -33,11 +37,54 @@ public class App  {
 		System.out.println(a418f.getIdh().toString());
 		System.out.println(a418f.getIjst().toString());
 				
-		MongoOperations mongoOperation = (MongoOperations) context.getBean("mongoTemplate");
+//		MongoOperations mongoOperation = (MongoOperations) context.getBean("mongoTemplate");
+
+		String fluxTemplate = "<div> bobo "
+				+ "<div id='monid1' class='bernard editable'>ceci est du <p>texte</p> </div>"
+				+ "<div id='monid2_ref:page' class='bernard editable'>ceci est un autre <p>texte</p> </div>"
+				+ "</div>";
 
 		
 		
-		a418f.saveTemplate(mongoOperation);
+//		a418f.temrepo.deleteAll();
+		
+		a418f.removeall();
+		a418f.insertTemplate(fluxTemplate, "premierTemplate1");
+		
+		
+//		a418f.addListTemplateElement("premierTemplate1");
+
+		
+		
+		System.exit(0);
+
+		Template t1 = new Template();
+		t1.setName("premierTemplate");
+		t1.setHtml(fluxTemplate);
+
+		a418f.temrepo.insert(t1);
+		
+//		mongoOperation.insert(t1);
+		
+		Query q1 = new Query(Criteria.where("name").is("premierTemplate"));
+		Query q2 = new Query();
+//		System.out.println("nb de template q1 => " + mongoOperation.count(q1, Template.class));
+//		System.out.println("nb de template q2 => " + mongoOperation.count(q2, Template.class));
+		
+		
+		Template t2 = a418f.temrepo.findByName("premierTemplate");
+		System.out.println("t2 => " + t2);
+		System.out.println("t2.id => " + t2.getId() );
+		
+		
+		Template t21 = a418f.temrepo.findByName("premierTemplate");
+		System.out.println("t21 => " + t21);
+		System.out.println("t21.id => " + t21.getId() );
+
+		
+		
+		Template t3 = a418f.temrepo.findByName("bernard");
+		System.out.println("t3 => " + t3);
 				
 		
 //		IDBConnection idbc = new OserionBuilder().buildDBConnection();

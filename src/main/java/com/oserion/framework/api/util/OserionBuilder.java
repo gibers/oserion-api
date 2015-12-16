@@ -22,7 +22,9 @@ import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 
 @EnableMongoRepositories
 @Configuration
-@ComponentScan(basePackages={"com.oserion.framework.api.business.impl.mongo", "com.oserion.framework.api.business.impl.jsoup"})
+@ComponentScan(basePackages={"com.oserion.framework.api.business.impl.mongo", 
+		"com.oserion.framework.api.business.impl.jsoup", 
+		"com.oserion.framework.api.business.beans"})
 public class OserionBuilder {
 
 	private static final String PROPERTY_DB_HOST = "database.host";
@@ -50,20 +52,21 @@ public class OserionBuilder {
 		return new Api418Facade();
 	}
 
-	@Bean
-	public MongoDatabase theConnectionMongo() {
-		MongoClient mongoClient = new MongoClient(System.getProperty(PROPERTY_DB_HOST),
-				Integer.parseInt(System.getProperty(PROPERTY_DB_PORT)));
-		MongoDatabase database = mongoClient.getDatabase(System.getProperty(PROPERTY_DB_SCHEMA));
-		return database;
-	}
+//	@Bean
+//	public MongoDatabase theConnectionMongo() {
+//		MongoClient mongoClient = new MongoClient(System.getProperty(PROPERTY_DB_HOST),
+//				Integer.parseInt(System.getProperty(PROPERTY_DB_PORT)));
+//		MongoDatabase database = mongoClient.getDatabase(System.getProperty(PROPERTY_DB_SCHEMA));
+//		return database;
+//	}
 	
 	
 	// -----CONFIG MONGO-------
 	
 	@Bean
 	public MongoDbFactory mongoDbFactory() throws Exception {
-		return new SimpleMongoDbFactory(new MongoClient("localhost", 27017), "oserionDB");
+		return new SimpleMongoDbFactory(new MongoClient(System.getProperty(PROPERTY_DB_HOST), Integer.parseInt(System.getProperty(PROPERTY_DB_PORT))), 
+				System.getProperty(PROPERTY_DB_SCHEMA));
 	}
 
 	@Bean

@@ -30,7 +30,7 @@ public class MongoDBDataHandler implements IDataHandler {
 
 	private final String MONGO_COLLECTION_TEMPLATE = "Template";
 
-	@Autowired
+//	@Autowired
 	private MongoDatabase database;
 	
 	@Autowired
@@ -184,7 +184,6 @@ public class MongoDBDataHandler implements IDataHandler {
 		t1.setName("nouveaut");
 		t1.setHtml(html);
 		
-		templateR.sav
 	}
 
 

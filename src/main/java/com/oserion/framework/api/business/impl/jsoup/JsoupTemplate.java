@@ -10,7 +10,7 @@ import com.oserion.framework.api.business.beans.ContentElement;
 import org.springframework.stereotype.Component;
 
 //@Component
-public class JsoupTemplate implements ITemplate {
+public class JsoupTemplate /*implements ITemplate*/ {
 	
 	private String name = null;
 	private String html = null;
@@ -46,17 +46,17 @@ public class JsoupTemplate implements ITemplate {
 	}
 	
 	
-	/**
-	 * Converti un list<ContentElement> en Map, afin de l'insérer en bdd.
-	 * 
-	 */
-	public Map<String, Object> listTemplateMap(List<ContentElement> listElement) {
-		Map<String, Object> listTypeEtRef = new HashMap<String, Object>();
-		for(ContentElement cte : listElement) {
-			listTypeEtRef.put(cte.getType() , cte.getRef());
-		}
-		return listTypeEtRef;
-	}
+//	/**
+//	 * Converti un list<ContentElement> en Map, afin de l'insérer en bdd.
+//	 * 
+//	 */
+//	public Map<String, Object> listTemplateMap(List<ContentElement> listElement) {
+//		Map<String, Object> listTypeEtRef = new HashMap<String, Object>();
+//		for(ContentElement cte : listElement) {
+//			listTypeEtRef.put(cte.getType() , cte.getRef());
+//		}
+//		return listTypeEtRef;
+//	}
 	
 //	public Map<String, Object> listTemplateMapWithContenu(List<ContentElement> listElement) {
 //		Map<String, Object> listTypeRefContenu = new HashMap<String, Object>();
