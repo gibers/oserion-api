@@ -55,7 +55,6 @@ public class App  {
 //		a418f.addListTemplateElement("premierTemplate1");
 
 		
-		
 		System.exit(0);
 
 		Template t1 = new Template();
