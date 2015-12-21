@@ -24,7 +24,7 @@ import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 @Configuration
 @ComponentScan(basePackages={"com.oserion.framework.api.business.impl.mongo", 
 		"com.oserion.framework.api.business.impl.jsoup", 
-		"com.oserion.framework.api.business.beans"})
+		"com.oserion.framework.api.business.beans", "com.oserion.framework.api.util"})
 public class OserionBuilder {
 
 	private static final String PROPERTY_DB_HOST = "database.host";

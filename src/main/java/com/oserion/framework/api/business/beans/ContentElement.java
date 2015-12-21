@@ -29,6 +29,10 @@ public class ContentElement {
 		this.type = type;
 		this.value = value;
 	}
+	public ContentElement(String ref, String type) {
+		this.ref = ref;
+		this.type = type;
+	}
 
 	public String getRef() {
 		return ref;
@@ -48,8 +52,7 @@ public class ContentElement {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	
+		
 	public void affiche() {
 		System.out.println("---------------------");
 		System.out.println("ref => " + ref);

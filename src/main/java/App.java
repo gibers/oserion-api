@@ -10,8 +10,10 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.oserion.framework.api.Api418Facade;
 import com.oserion.framework.api.business.IDBConnection;
+import com.oserion.framework.api.business.beans.ContentElement.Type;
 import com.oserion.framework.api.business.impl.beansDB.Template;
 import com.oserion.framework.api.util.OserionBuilder;
+import com.oserion.framework.api.util.Supervision;
 
 /**
  * Hello world!
@@ -34,8 +36,8 @@ public class App  {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(OserionBuilder.class);
 		
 		Api418Facade a418f = context.getBean(Api418Facade.class);
-		System.out.println(a418f.getIdh().toString());
-		System.out.println(a418f.getIjst().toString());
+		Supervision supervision = context.getBean(Supervision.class);
+		
 				
 //		MongoOperations mongoOperation = (MongoOperations) context.getBean("mongoTemplate");
 
@@ -45,15 +47,32 @@ public class App  {
 				+ "</div>";
 
 		
-		
 //		a418f.temrepo.deleteAll();
 		
-		a418f.removeall();
-		a418f.insertTemplate(fluxTemplate, "premierTemplate1");
+//		a418f.removeall(); OK
+//		a418f.insertTemplate(fluxTemplate, "premierTemplate2"); 		 OK
+//		a418f.addPageUrl("premierTemplate2", "/bernard/toto"); 
 		
-		
-//		a418f.addListTemplateElement("premierTemplate1");
+//		a418f.removePageUrl("/bernard/toto6");
 
+//		a418f.insertOrUpdateTemplate("premierTemplate1", fluxTemplate);
+		
+//		a418f.addPageUrl("premierTemplate1", "/bernard/toto8");
+		
+//		int nb = a418f.test();
+		
+//		a418f.addListTemplateElement("premierTemplate1", "monId", Type.EDITABLE, "<div> une balise aléatoire </div>" );
+//		a418f.addListVariableElement("premierTemplate1", "idd_ref:page", Type.EDITABLE, "<div> une balise aléatoire </div>" );
+
+//		a418f.getEmptyTemplateFromName("premierTemplate1");
+		
+//		System.out.println(a418f.modifyContentElement("premierTemplate1", "monid1", Type.EDITABLE, "turlute"));
+		
+		supervision.listContentElementFromTemplateName("fichierTestHtml");
+		
+		
+//		System.out.println(a418f.getFullTemplateFromName("/bernard/toto8"));
+		
 		
 		System.exit(0);
 

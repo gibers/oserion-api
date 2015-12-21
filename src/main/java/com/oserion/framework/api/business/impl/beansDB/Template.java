@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.oserion.framework.api.business.beans.ContentElement;
-import com.oserion.framework.api.business.beans.PageReference;
 
 
 @Document
@@ -27,8 +26,8 @@ public class Template {
 	private List<ContentElement> listTemplateElement  = new ArrayList<ContentElement>();
 	@DBRef	
 	private List<ContentElement> listVariableElement  = new ArrayList<ContentElement>();
-	@DBRef
-	private List<PageReference> listReference  = new ArrayList<PageReference>();
+
+//	private List<String> listPageReference  = new ArrayList<String>();
 	
 	
 	public String getId() {
@@ -60,12 +59,12 @@ public class Template {
 	public void setListVariableElement(List<ContentElement> listVariableElement) {
 		this.listVariableElement = listVariableElement;
 	}
-	public List<PageReference> getListReference() {
-		return listReference;
-	}
-	public void setListReference(List<PageReference> listReference) {
-		this.listReference = listReference;
-	}
+//	public List<String> getListPageReference() {
+//		return listPageReference;
+//	}
+//	public void setListPageReference(List<String> listPageReference) {
+//		this.listPageReference = listPageReference;
+//	}
 	
 	public Template () {}
     public Template (String name, String html) {
