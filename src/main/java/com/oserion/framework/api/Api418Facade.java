@@ -2,6 +2,7 @@ package com.oserion.framework.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -29,6 +30,8 @@ import com.oserion.framework.api.util.CodeReturn;
 
 @Component
 public class Api418Facade {
+	
+    private static final Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Autowired
 	private JsoupTemplificator ijst;
@@ -51,12 +54,15 @@ public class Api418Facade {
 
 
 	public void insertOrUpdateTemplate( String templateName, String fluxTemplate) {
+				
 		Query q1 = new Query(Criteria.where("name").is(templateName));
 		Template t1 = (Template) mongoOperation.findOne(q1, Template.class);
 
 		if(t1 == null) {
+			LOG.info("insertion du template : " + templateName );
 			insertTemplate(fluxTemplate ,templateName );
 		} else {
+			LOG.info("maj du template : " + templateName );
 			JsoupTemplate template1 = ijst.createTemplateFromHTML(fluxTemplate, templateName);
 			t1.setHtml(template1.getHtml());
 			t1.setListTemplateElement(template1.getListTemplateElement());
@@ -209,7 +215,7 @@ public class Api418Facade {
 	
 	/**
 	 * Ajoute autant de contentElement qu'il y a de page pour un template donné.
-	 * Les contentElements ajoutés seront variabilisés avec les key qui correspond aux pages.
+	 * Les contentElements ajoutés seront variabilisés avec les key qui correspondent aux pages.
 	 * 
 	 * @param templateName
 	 * @param ref
@@ -298,29 +304,35 @@ public class Api418Facade {
 		return CodeReturn.error26(ref, type.name());
 	}
 	
-	
-	
-	public String uploadTemplateFromHtml( String fluxTemplate, String templateName ) {
-		JsoupTemplate template1 = ijst.createTemplateFromHTML(fluxTemplate, templateName);
-
-		Template t1 = new Template();
-		t1.setName("premierTemplate");
-		t1.setHtml(fluxTemplate);
-
-
-		temrepo.insert(t1);
-		//		idh.insertOrUpdateTemplate(template1);
-
-		//		idh.displayContentBase();
-		return templateName;
-	}
-
-	public String saveTemplate(MongoOperations mongoOperation) {
-
-		//		mongoOperation.save();
-
+	/**
+	 * Supprime le template passé en argument et ses ContentElement et ContentVariable.
+	 * @param templateName
+	 * @return null si OK . 
+	 */
+	public String removeTemplate(String templateName) {
+		Query q1 = new Query(Criteria.where("name").is(templateName));
+		Template t1 = (Template) mongoOperation.findOne(q1, Template.class);
+		if(t1 == null) 
+			return CodeReturn.error22;
+		q1 = new Query(Criteria.where("template").is(templateName));
+		List<PageReference> lp = (List<PageReference>) mongoOperation.find(q1, PageReference.class);
+		
+		List<ContentElement> listComplete = t1.getListTemplateElement();
+		listComplete.addAll(t1.getListVariableElement());
+		for(ContentElement cte : listComplete) 
+			mongoOperation.remove(cte);
+		for(PageReference lp1 : lp) 
+			mongoOperation.remove(lp1);
+		
+		mongoOperation.remove(t1);
 		return null;
 	}
+	
+	public void test() {
+		LOG.info("Ceci est un message qui s'affiche dans le fichier de log.");
+		LOG.finest("Ceci est un message finest qui s'affiche dans le fichier de log.");
+	}
+	
 
 	public String getHTMLPage(String nameTemplate) {
 		return idh.selectHTMLTemplate(nameTemplate);

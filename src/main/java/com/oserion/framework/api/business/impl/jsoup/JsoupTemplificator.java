@@ -3,6 +3,7 @@ package com.oserion.framework.api.business.impl.jsoup;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.ITemplificator;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JsoupTemplificator /*implements ITemplificator*/ {
 
+    private static final Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    
 	public String texte = "texte";
 
 	//	@Autowired

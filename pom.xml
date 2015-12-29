@@ -13,6 +13,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <skipTests>true</skipTests>
 	</properties>
 
 	<dependencies>
@@ -20,7 +21,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -47,11 +48,17 @@
 			<artifactId>spring-context</artifactId>
 			<version>4.2.3.RELEASE</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>4.2.3.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>4.2.4.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -60,7 +67,36 @@
 			<version>1.8.3</version>
 		</dependency>
 
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+        </dependency>
+        
 	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.surefire</groupId>
+						<artifactId>surefire-junit47</artifactId>
+						<version>2.19</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<skipTests>${skipTests}</skipTests>
+					<systemPropertiesFile>C:\Users\Jean-Baptiste\Documents\oserion\oserion-web\config.properties</systemPropertiesFile>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
 
 	<!-- <build> -->
 	<!-- <resources>src/main/resources</resources> -->

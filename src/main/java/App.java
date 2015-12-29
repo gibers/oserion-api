@@ -12,6 +12,7 @@ import com.oserion.framework.api.Api418Facade;
 import com.oserion.framework.api.business.IDBConnection;
 import com.oserion.framework.api.business.beans.ContentElement.Type;
 import com.oserion.framework.api.business.impl.beansDB.Template;
+import com.oserion.framework.api.util.MyLogger;
 import com.oserion.framework.api.util.OserionBuilder;
 import com.oserion.framework.api.util.Supervision;
 
@@ -27,6 +28,8 @@ public class App  {
 	public static void main( String[] args ) throws IOException {
 
 //    	ApplicationContext  context = new ClassPathXmlApplicationContext("oserion-spring.xml");
+
+		MyLogger.setup();
 
 		FileInputStream configFile = new FileInputStream(System.getProperty(App.PROPERTY_CONFIG_PATH));
 		System.getProperties().load(configFile);
@@ -46,6 +49,7 @@ public class App  {
 				+ "<div id='monid2_ref:page' class='bernard editable'>ceci est un autre <p>texte</p> </div>"
 				+ "</div>";
 
+//		a418f.test();
 		
 //		a418f.temrepo.deleteAll();
 		
@@ -67,13 +71,16 @@ public class App  {
 //		a418f.getEmptyTemplateFromName("premierTemplate1");
 		
 //		System.out.println(a418f.modifyContentElement("premierTemplate1", "monid1", Type.EDITABLE, "turlute"));
+
+//		a418f.removeTemplate("fichierTestHtml1");
 		
-		supervision.listContentElementFromTemplateName("fichierTestHtml");
+		supervision.listContentElementFromTemplateName("fichierTestHtml1");
 		
 		
 //		System.out.println(a418f.getFullTemplateFromName("/bernard/toto8"));
 		
-		
+
+		System.out.println(" -- FIN -- ");
 		System.exit(0);
 
 		Template t1 = new Template();
