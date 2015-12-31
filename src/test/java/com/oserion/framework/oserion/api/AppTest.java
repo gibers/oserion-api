@@ -11,6 +11,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,7 @@ import com.oserion.framework.api.util.Supervision;
 @ContextConfiguration(classes=OserionBuilder.class)
 public class AppTest {
 
-    public static final String PROPERTY_CONFIG_PATH = "oserion.config.path";
+//    public static final String PROPERTY_CONFIG_PATH = "oserion.config.path";
     
 	@Autowired
 	private Api418Facade a418f;
@@ -66,11 +67,27 @@ public class AppTest {
 		}
 		String templateName = FilenameUtils.removeExtension( f1.getName());
   
-//		a418f.insertOrUpdateTemplate(templateName , strTemplate);
+		a418f.insertTemplate(templateName , strTemplate);
 		
 		System.out.println("adresse mémoire => " + a418f );
 		assertTrue(true);
 	}
+	
+//	@Test 
+	public void updateTemplate () {
+		File f1 = new File("C:\\Users\\Jean-Baptiste\\Documents\\oserion\\fichierTestHtml1.html");
+		String strTemplate = null;
+		try {
+			strTemplate = FileUtils.readFileToString(f1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String templateName = FilenameUtils.removeExtension( f1.getName());
+  
+		a418f.updateTemplate(templateName , strTemplate);
+		
+	}
+	
 
 	@Test
 	public void testSupervision() {

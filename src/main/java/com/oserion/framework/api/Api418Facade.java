@@ -30,8 +30,8 @@ import com.oserion.framework.api.util.CodeReturn;
 
 @Component
 public class Api418Facade {
-	
-    private static final Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	private static final Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Autowired
 	private JsoupTemplificator ijst;
@@ -53,29 +53,92 @@ public class Api418Facade {
 	//	public ContentElementRepository contentrepo;
 
 
-	public void insertOrUpdateTemplate( String templateName, String fluxTemplate) {
-				
+	public String updateTemplate(String templateName, String fluxTemplate) {
 		Query q1 = new Query(Criteria.where("name").is(templateName));
 		Template t1 = (Template) mongoOperation.findOne(q1, Template.class);
 
-		if(t1 == null) {
-			LOG.info("insertion du template : " + templateName );
-			insertTemplate(fluxTemplate ,templateName );
-		} else {
-			LOG.info("maj du template : " + templateName );
-			JsoupTemplate template1 = ijst.createTemplateFromHTML(fluxTemplate, templateName);
-			t1.setHtml(template1.getHtml());
-			t1.setListTemplateElement(template1.getListTemplateElement());
-			t1.setListVariableElement(template1.getListVariableElement());
-			mongoOperation.insertAll(template1.getListTemplateElement());
-			mongoOperation.insertAll(template1.getListVariableElement());
-
-			mongoOperation.save(t1);
+		if(t1 == null)
+			return CodeReturn.error22;
+		
+		JsoupTemplate jStemplate1 = ijst.createTemplateFromHTML(fluxTemplate, templateName);
+		List<ContentElement> newlistElement = jStemplate1.getListTemplateElement();
+		List<ContentElement> oldlistElement = t1.getListTemplateElement();
+		
+		List<ContentElement> newlistElementAModifier = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementARajouter = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementASupprimer = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementTraiter = new ArrayList<ContentElement>();
+		
+		for(ContentElement ctenew : newlistElement ) {
+			boolean flag = false;
+			for(ContentElement cteold : oldlistElement ) {
+				if(ctenew.getRef().equalsIgnoreCase(cteold.getRef())) {
+					if(!ctenew.getType().equalsIgnoreCase(cteold.getType())) {
+						newlistElementAModifier.add(ctenew);
+					}
+					newlistElementTraiter.add(cteold);
+					flag = true;
+					break;
+				}
+			}
+			if(!flag)
+				newlistElementARajouter.add(ctenew);
 		}
+		
+		for(ContentElement cteold : oldlistElement) {
+			if(!newlistElementTraiter.contains(cteold))
+				newlistElementASupprimer.add(cteold);
+		}
+
+		for( ContentElement cte : newlistElementARajouter ) {
+			System.out.println("rajout de l'element => " + cte.getRef());
+			mongoOperation.insert(cte);
+			t1.getListTemplateElement().add(cte);
+		}
+		for( ContentElement cte : newlistElementASupprimer ) {
+			mongoOperation.remove(cte);
+			t1.getListTemplateElement().remove(cte);
+		}
+		for( ContentElement cte : newlistElementAModifier ) {
+			Query q2 = new Query(Criteria.where("ref").is(cte.getRef()));
+			ContentElement t2 = (ContentElement) mongoOperation.findOne(q2, ContentElement.class);
+
+//			mongoOperation.updateFirst(q2, arg1, arg2);
+			t1.getListTemplateElement().remove(cte);
+		}
+		
+		t1.setHtml(jStemplate1.getHtml());
+		mongoOperation.save(t1);
+		return "ok";
+	}
+	
+
+	public String insertTemplate(String templateName, String fluxTemplate) {
+
+		Query q1 = new Query(Criteria.where("name").is(templateName));
+		Template t1 = (Template) mongoOperation.findOne(q1, Template.class);
+
+		if(t1 != null) 
+			return CodeReturn.error21(templateName);
+		
+		LOG.info("insertion du template : " + templateName );
+		insertListFromTemplate( fluxTemplate ,templateName );
+
+		//			LOG.info("maj du template : " + templateName );
+		//			JsoupTemplate template1 = ijst.createTemplateFromHTML(fluxTemplate, templateName);
+		//			t1.setHtml(template1.getHtml());
+		//			t1.setListTemplateElement(template1.getListTemplateElement());
+		//			t1.setListVariableElement(template1.getListVariableElement());
+		//			mongoOperation.insertAll(template1.getListTemplateElement());
+		//			mongoOperation.insertAll(template1.getListVariableElement());
+		//
+		//			mongoOperation.save(t1);
+
+		return "ok";
 	}
 
 
-	public String insertTemplate( String fluxTemplate, String templateName ) {
+	public String insertListFromTemplate( String fluxTemplate, String templateName ) {
 		JsoupTemplate template1 = ijst.createTemplateFromHTML(fluxTemplate, templateName);
 
 		Template t1 = new Template();
@@ -147,7 +210,7 @@ public class Api418Facade {
 		mongoOperation.save(t1);
 	}
 
-	
+
 	/**
 	 * 
 	 * supprime une page de la collection PageReference.
@@ -186,8 +249,8 @@ public class Api418Facade {
 		template.getListVariableElement().removeAll(listVarEleASupp);
 		mongoOperation.save(template);
 	}
-
 	
+
 	/**
 	 * Ajoute une contentElement et le relie au template adéquat. 
 	 * @param templateName
@@ -212,7 +275,7 @@ public class Api418Facade {
 
 		return null;
 	}
-	
+
 	/**
 	 * Ajoute autant de contentElement qu'il y a de page pour un template donné.
 	 * Les contentElements ajoutés seront variabilisés avec les key qui correspondent aux pages.
@@ -247,7 +310,7 @@ public class Api418Facade {
 		}
 		mongoOperation.save(t1);
 		//créer autant de ContentElement qu'il y a de key.
-		
+
 		return null;
 	}
 
@@ -277,10 +340,10 @@ public class Api418Facade {
 			return CodeReturn.error22;
 		Template t1 = p1.getTemplate();
 		String htmlOrError = ijst.construireFlux(t1, p1.getKey());
-		
+
 		return htmlOrError;
 	}
-	
+
 
 	public String modifyContentElement(String templateName, String ref, Type type, String newValue) {
 		Query q1 = new Query(Criteria.where("name").is(templateName));
@@ -289,21 +352,21 @@ public class Api418Facade {
 			return CodeReturn.error22;
 		List<ContentElement> listComplete = t1.getListTemplateElement();
 		listComplete.addAll(t1.getListVariableElement());
-		
-//		boolean flag = false;
+
+		//		boolean flag = false;
 		for(ContentElement cte : listComplete) {
 			if(cte.getType().equalsIgnoreCase(type.name()) && cte.getRef().equalsIgnoreCase(ref) ) {
 				cte.setValue(newValue);
-//				flag = true;
+				//				flag = true;
 				mongoOperation.save(cte);
 				return null;
 			}
 		}
-//		if(flag)
-//			return null;
+		//		if(flag)
+		//			return null;
 		return CodeReturn.error26(ref, type.name());
 	}
-	
+
 	/**
 	 * Supprime le template passé en argument et ses ContentElement et ContentVariable.
 	 * @param templateName
@@ -316,23 +379,23 @@ public class Api418Facade {
 			return CodeReturn.error22;
 		q1 = new Query(Criteria.where("template").is(templateName));
 		List<PageReference> lp = (List<PageReference>) mongoOperation.find(q1, PageReference.class);
-		
+
 		List<ContentElement> listComplete = t1.getListTemplateElement();
 		listComplete.addAll(t1.getListVariableElement());
 		for(ContentElement cte : listComplete) 
 			mongoOperation.remove(cte);
 		for(PageReference lp1 : lp) 
 			mongoOperation.remove(lp1);
-		
+
 		mongoOperation.remove(t1);
 		return null;
 	}
-	
+
 	public void test() {
 		LOG.info("Ceci est un message qui s'affiche dans le fichier de log.");
 		LOG.finest("Ceci est un message finest qui s'affiche dans le fichier de log.");
 	}
-	
+
 
 	public String getHTMLPage(String nameTemplate) {
 		return idh.selectHTMLTemplate(nameTemplate);

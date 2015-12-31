@@ -1,6 +1,11 @@
 package com.oserion.framework.api.util;
 
 public class CodeReturn {
+
+	
+	public static String error21(String templateName ) {
+		return "template " + templateName + " already exists. ";
+	}
 	
 	public static String error22 = new String ("no template with this name");
 	public static String error23 = new String ("pageReference already in Collection, "

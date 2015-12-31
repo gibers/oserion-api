@@ -65,7 +65,8 @@ public class OserionBuilder {
 	
 	@Bean
 	public MongoDbFactory mongoDbFactory() throws Exception {
-		return new SimpleMongoDbFactory(new MongoClient(System.getProperty(PROPERTY_DB_HOST), Integer.parseInt(System.getProperty(PROPERTY_DB_PORT))), 
+		return new SimpleMongoDbFactory(new MongoClient(System.getProperty(PROPERTY_DB_HOST), 
+				Integer.parseInt(System.getProperty(PROPERTY_DB_PORT))), 
 				System.getProperty(PROPERTY_DB_SCHEMA));
 	}
 

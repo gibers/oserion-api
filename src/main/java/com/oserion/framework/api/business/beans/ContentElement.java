@@ -59,6 +59,12 @@ public class ContentElement {
 		System.out.println("type => " + type);
 		System.out.println("value => " + value);
 	}
+	
+	public boolean identique(ContentElement cteold) {
+		if(!cteold.getRef().equalsIgnoreCase(ref)) return false;
+		if(!cteold.getType().equalsIgnoreCase(type)) return false;
+		return true ;
+	}
 
 }
 
