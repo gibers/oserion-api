@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import com.oserion.framework.api.business.IPageReference;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.BeforeClass;
@@ -101,6 +102,7 @@ public class AppTest {
 		List<ITemplate> listITemplate = a418f.selectTemplates();
 		for( ITemplate it : listITemplate) {
 			System.out.println("nom TEMPLATE : " + it.getName());
+<<<<<<< HEAD
 			if(it.getListPage() != null) {
 					
 				for(IPageReference p1 : it.getListPage()) {
@@ -110,6 +112,10 @@ public class AppTest {
 						((PageReference) p1).getTemplate();
 					}
 						
+=======
+			if(it.getListPage() != null)
+				for(IPageReference p1 : it.getListPage()) {
+>>>>>>> branch 'skateBoard1' of https://github.com/gibers/oserion-api.git
 					System.out.println(" ** URL : " + p1.getUrl() );
 					System.out.println(" ** KEY : " + p1.getKey() );
 				}
