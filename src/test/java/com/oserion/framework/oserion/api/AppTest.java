@@ -102,7 +102,7 @@ public class AppTest {
 		List<ITemplate> listITemplate = a418f.selectTemplates();
 		for( ITemplate it : listITemplate) {
 			System.out.println("nom TEMPLATE : " + it.getName());
-<<<<<<< HEAD
+			
 			if(it.getListPage() != null) {
 					
 				for(IPageReference p1 : it.getListPage()) {
@@ -111,14 +111,8 @@ public class AppTest {
 						System.out.println("p1 est une pageReference");
 						((PageReference) p1).getTemplate();
 					}
-						
-=======
-			if(it.getListPage() != null)
-				for(IPageReference p1 : it.getListPage()) {
->>>>>>> branch 'skateBoard1' of https://github.com/gibers/oserion-api.git
-					System.out.println(" ** URL : " + p1.getUrl() );
-					System.out.println(" ** KEY : " + p1.getKey() );
 				}
+				
 			}
 		}
 	}
