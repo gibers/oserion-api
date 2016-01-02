@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.oserion.framework.api.Api418Facade;
+import com.oserion.framework.api.business.IPageReference;
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.beans.PageReference;
 import com.oserion.framework.api.util.OserionBuilder;
@@ -100,11 +101,19 @@ public class AppTest {
 		List<ITemplate> listITemplate = a418f.selectTemplates();
 		for( ITemplate it : listITemplate) {
 			System.out.println("nom TEMPLATE : " + it.getName());
-			if(it.getListPage() != null)
-				for(PageReference p1 : it.getListPage()) {
+			if(it.getListPage() != null) {
+					
+				for(IPageReference p1 : it.getListPage()) {
+					
+					if( p1 instanceof PageReference ) {
+						System.out.println("p1 est une pageReference");
+						((PageReference) p1).getTemplate();
+					}
+						
 					System.out.println(" ** URL : " + p1.getUrl() );
 					System.out.println(" ** KEY : " + p1.getKey() );
 				}
+			}
 		}
 	}
 	
