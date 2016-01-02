@@ -25,5 +25,6 @@ public interface ITemplate {
 //	public void afficheVariableTemplateEle();
 //	public Map<String, Object> listTemplateMap(List<ContentElement> listElement);
 	
+	
 }
 

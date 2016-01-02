@@ -21,7 +21,6 @@ public class JsoupTemplate implements ITemplate {
 	private List<ContentElement> listVariableElement  = new ArrayList<ContentElement>();
 	private List<PageReference> listPage   = new ArrayList<PageReference>();;
 	
-	
 	public String getName() {
 		return name;
 	}
@@ -75,8 +74,7 @@ public class JsoupTemplate implements ITemplate {
 //		}
 //		return listTypeRefContenu;
 //	}
-	
-	
+
 	/**
 	 * Les constructeurs
 	 * @param name
@@ -86,8 +84,7 @@ public class JsoupTemplate implements ITemplate {
 	}
 	public JsoupTemplate() {
 	}
-	
-	
+
 	/* DEBUG */
 	public void afficheTemplateEle () {
 		for(ContentElement cte : listTemplateElement)
@@ -97,7 +94,8 @@ public class JsoupTemplate implements ITemplate {
 		for(ContentElement cte : listVariableElement)
 			cte.affiche();
 	}
-	
+
+
 }
 
 
