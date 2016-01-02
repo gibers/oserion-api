@@ -1,5 +1,6 @@
 package com.oserion.framework.api.business.beans;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oserion.framework.api.business.IPageReference;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -37,6 +38,8 @@ public class PageReference implements IPageReference{
 	public PageReference(String newUrl) {
 		this.url = newUrl;
 	}
+
+	@JsonIgnore
 	public Template getTemplate() {
 		return template;
 	}

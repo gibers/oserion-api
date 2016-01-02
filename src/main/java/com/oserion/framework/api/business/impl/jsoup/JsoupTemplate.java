@@ -20,7 +20,7 @@ public class JsoupTemplate implements ITemplate {
 	
 	private List<ContentElement> listTemplateElement  = new ArrayList<ContentElement>();
 	private List<ContentElement> listVariableElement  = new ArrayList<ContentElement>();
-	private List<PageReference> listPage   = new ArrayList<PageReference>();;
+	private List<IPageReference> listPage   = new ArrayList<IPageReference>();
 	
 	public String getName() {
 		return name;
