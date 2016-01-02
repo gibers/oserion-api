@@ -7,17 +7,19 @@ import java.util.Map;
 
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.beans.ContentElement;
+import com.oserion.framework.api.business.beans.PageReference;
+
 import org.springframework.stereotype.Component;
 
 //@Component
-public class JsoupTemplate /*implements ITemplate*/ {
+public class JsoupTemplate implements ITemplate {
 	
 	private String name = null;
 	private String html = null;
 	
 	private List<ContentElement> listTemplateElement  = new ArrayList<ContentElement>();
 	private List<ContentElement> listVariableElement  = new ArrayList<ContentElement>();
-//	private List<ContentElement> listPage   = null;
+	private List<PageReference> listPage   = new ArrayList<PageReference>();;
 	
 	
 	public String getName() {
@@ -43,6 +45,12 @@ public class JsoupTemplate /*implements ITemplate*/ {
 	}
 	public void setListVariableElement(List<ContentElement> listVariableElement) {
 		this.listVariableElement = listVariableElement;
+	}
+	public List<PageReference> getListPage() {
+		return listPage;
+	}
+	public void setListPage(List<PageReference> listPage) {
+		this.listPage = listPage;
 	}
 	
 	
@@ -75,6 +83,8 @@ public class JsoupTemplate /*implements ITemplate*/ {
 	 */
 	public JsoupTemplate(String name) {
 		this.name = name;
+	}
+	public JsoupTemplate() {
 	}
 	
 	

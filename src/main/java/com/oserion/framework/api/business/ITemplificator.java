@@ -1,13 +1,18 @@
 package com.oserion.framework.api.business;
 
-import org.springframework.stereotype.Component;
+import java.util.List;
 
 import com.oserion.framework.api.business.beans.ContentElement;
+import com.oserion.framework.api.business.impl.beansDB.Template;
+import com.oserion.framework.api.business.impl.jsoup.JsoupTemplate;
 
-@Component
+//@Component
 public interface ITemplificator {
 
-	ITemplate createTemplateFromHTML(String fluxTemplate, String templateName);
+	JsoupTemplate createTemplateFromHTML(String fluxTemplate, String templateName);
 	ContentElement majContenu(ContentElement e);
-
+	String construireFlux(Template t1, int key);
+	
+	List<ITemplate> selectTemplates();
+	
 }

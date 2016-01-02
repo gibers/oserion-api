@@ -14,6 +14,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import com.oserion.framework.api.business.IDataHandler;
+import com.oserion.framework.api.business.ITemplate;
+import com.oserion.framework.api.business.ITemplificator;
 import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.beans.ContentElement.Type;
 import com.oserion.framework.api.business.beans.PageReference;
@@ -31,7 +33,7 @@ public class Api418Facade {
 	private static final Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Autowired
-	private JsoupTemplificator ijst;
+	private ITemplificator ijst;
 
 	@Autowired
 	private MongoDBDataHandler idh;
@@ -49,7 +51,12 @@ public class Api418Facade {
 	//	@Autowired 
 	//	public ContentElementRepository contentrepo;
 
+	
+	public List<ITemplate> selectTemplates() {
+		return ijst.selectTemplates();
+	}
 
+	
 	public String updateTemplate(String templateName, String fluxTemplate) {
 		Query q1 = new Query(Criteria.where("name").is(templateName));
 		Template t1 = (Template) mongoOperation.findOne(q1, Template.class);
@@ -569,21 +576,21 @@ public class Api418Facade {
 		idh.insertOrUpdateContent(cte);
 	}
 
-	public JsoupTemplificator getIjst() {
-		return ijst;
-	}
+//	public JsoupTemplificator getIjst() {
+//		return ijst;
+//	}
+//
+//	public void setIjst(JsoupTemplificator ijst) {
+//		this.ijst = ijst;
+//	}
 
-	public void setIjst(JsoupTemplificator ijst) {
-		this.ijst = ijst;
-	}
-
-	public IDataHandler getIdh() {
-		return idh;
-	}
-
-	public void setIdh(MongoDBDataHandler idh) {
-		this.idh = idh;
-	}
+//	public IDataHandler getIdh() {
+//		return idh;
+//	}
+//
+//	public void setIdh(MongoDBDataHandler idh) {
+//		this.idh = idh;
+//	}
 
 	public TemplateRepository getTemrepo() {
 		return temrepo;

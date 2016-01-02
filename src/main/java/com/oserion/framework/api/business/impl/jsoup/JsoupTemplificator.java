@@ -9,6 +9,7 @@ import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.ITemplificator;
 import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.beans.ContentElement.Type;
+import com.oserion.framework.api.business.beans.PageReference;
 import com.oserion.framework.api.business.impl.beansDB.Template;
 import com.oserion.framework.api.util.CodeReturn;
 
@@ -16,17 +17,48 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JsoupTemplificator /*implements ITemplificator*/ {
+public class JsoupTemplificator implements ITemplificator {
 
     private static final Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     
 	public String texte = "texte";
 
+	@Autowired 	
+	public MongoOperations mongoOperation;
+
 	//	@Autowired
 	//	private ITemplate template = null;
+
+	
+	public List<ITemplate> selectTemplates() {
+		List<Template> listTemplate = mongoOperation.findAll(Template.class);
+		List<ITemplate> listITemplate = new ArrayList<ITemplate>();
+		
+		for(Template t1 : listTemplate ) {
+			ITemplate itemp = new JsoupTemplate(t1.getName());
+			
+			List<PageReference> listPageReference = getPageReferenceFromTemplate(t1);
+			if(listPageReference != null)
+				itemp.getListPage().addAll(listPageReference);
+				
+			listITemplate.add(itemp);
+		}
+		return listITemplate;
+	}
+
+	
+	private List<PageReference> getPageReferenceFromTemplate(Template t1) {
+		Query q1 = new Query(Criteria.where("template").is(t1));
+		List<PageReference> listPageRef = (List<PageReference>) mongoOperation.find(q1, PageReference.class);
+		return listPageRef;
+	}
 
 
 	public ContentElement majContenu(ContentElement e) {

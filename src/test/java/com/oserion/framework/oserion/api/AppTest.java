@@ -1,27 +1,23 @@
 package com.oserion.framework.oserion.api;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.oserion.framework.api.Api418Facade;
+import com.oserion.framework.api.business.ITemplate;
+import com.oserion.framework.api.business.beans.PageReference;
 import com.oserion.framework.api.util.OserionBuilder;
 import com.oserion.framework.api.util.Supervision;
 
@@ -64,20 +60,20 @@ public class AppTest {
     }
 	
 //	@Test
-	public void testInsertOrUpdateTemplate() {
-		String strTemplate = null;
-		try {
-			strTemplate = FileUtils.readFileToString(f1);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String templateName = FilenameUtils.removeExtension( f1.getName());
-  
-		a418f.insertTemplate(templateName , strTemplate);
-		
-		System.out.println("adresse mémoire => " + a418f );
-		assertTrue(true);
-	}
+//	public void testInsertOrUpdateTemplate() {
+//		String strTemplate = null;
+//		try {
+//			strTemplate = FileUtils.readFileToString(f1);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		String templateName = FilenameUtils.removeExtension( f1.getName());
+//  
+//		a418f.insertTemplate(templateName , strTemplate);
+//		
+//		System.out.println("adresse mémoire => " + a418f );
+//		assertTrue(true);
+//	}
 	
 	
 //	@Test 
@@ -99,13 +95,26 @@ public class AppTest {
 		a418f.addPageUrl(templateName, "/toto/titi");
 	}
 	
-
 	@Test
+	public void selectTemplate() {
+		List<ITemplate> listITemplate = a418f.selectTemplates();
+		for( ITemplate it : listITemplate) {
+			System.out.println("nom TEMPLATE : " + it.getName());
+			if(it.getListPage() != null)
+				for(PageReference p1 : it.getListPage()) {
+					System.out.println(" ** URL : " + p1.getUrl() );
+					System.out.println(" ** KEY : " + p1.getKey() );
+				}
+		}
+	}
+	
+
+//	@Test
 	public void testSupervision() {
 		String templateName = FilenameUtils.removeExtension( f1.getName());
 		
-		supervision.listContentElementFromTemplateName(templateName);
-//		supervision.listPageFromTemplateName(templateName);
+//		supervision.listContentElementFromTemplateName(templateName);
+		supervision.listPageFromTemplateName(templateName);
 	}
 	
 	

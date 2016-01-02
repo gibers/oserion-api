@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableMongoRepositories
-public class MongoDBDataHandler implements IDataHandler {
+public class MongoDBDataHandler /*implements IDataHandler*/ {
 
 	private final String MONGO_COLLECTION_TEMPLATE = "Template";
 
@@ -40,33 +40,33 @@ public class MongoDBDataHandler implements IDataHandler {
 //		this.database = (MongoDatabase) MongoDBConnection.getInstance().getDatabase();
 //	}
 
-	public boolean insertOrUpdateTemplate(ITemplate template ) {
-
-		MongoCollection<Document> collectionTemplate = database.getCollection("Template");
-
-		Map<String, Object> listTypeEtRefFixe = template.listTemplateMap(template.getListTemplateElement());
-		Map<String, Object> listTypeEtRefVariable = template.listTemplateMap(template.getListVariableElement());
-
-		Document doc = collectionTemplate.find(eq("name", template.getName())).first();
-
-		Document nouveauDdoc = new Document("name", template.getName())
-		.append("html", template.getHtml())
-		.append("listTemplateElement", new Document(listTypeEtRefFixe))
-		.append("listVariableElement", new Document(listTypeEtRefVariable));
-
-		if(doc == null) { // insertion
-			System.out.println("insertion du template : " + template.getName());
-			collectionTemplate.insertOne(nouveauDdoc);
-		} else { // modification
-			System.out.println("update du template : " + template.getName());
-			collectionTemplate.updateOne(doc, new Document("$set", nouveauDdoc));
-		}
-
-		insertOrUpdateManyContent(template.getListTemplateElement());
-		insertOrUpdateManyContent(template.getListVariableElement());
-
-		return false;
-	}
+//	public boolean insertOrUpdateTemplate(ITemplate template ) {
+//
+//		MongoCollection<Document> collectionTemplate = database.getCollection("Template");
+//
+//		Map<String, Object> listTypeEtRefFixe = template.listTemplateMap(template.getListTemplateElement());
+//		Map<String, Object> listTypeEtRefVariable = template.listTemplateMap(template.getListVariableElement());
+//
+//		Document doc = collectionTemplate.find(eq("name", template.getName())).first();
+//
+//		Document nouveauDdoc = new Document("name", template.getName())
+//		.append("html", template.getHtml())
+//		.append("listTemplateElement", new Document(listTypeEtRefFixe))
+//		.append("listVariableElement", new Document(listTypeEtRefVariable));
+//
+//		if(doc == null) { // insertion
+//			System.out.println("insertion du template : " + template.getName());
+//			collectionTemplate.insertOne(nouveauDdoc);
+//		} else { // modification
+//			System.out.println("update du template : " + template.getName());
+//			collectionTemplate.updateOne(doc, new Document("$set", nouveauDdoc));
+//		}
+//
+//		insertOrUpdateManyContent(template.getListTemplateElement());
+//		insertOrUpdateManyContent(template.getListVariableElement());
+//
+//		return false;
+//	}
 
 	public boolean insertOrUpdateManyContent(List<ContentElement> listElement) {
 		for(ContentElement ele : listElement) {
