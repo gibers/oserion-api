@@ -9,15 +9,14 @@ import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.beans.ContentElement;
 import org.springframework.stereotype.Component;
 
-//@Component
-public class JsoupTemplate /*implements ITemplate*/ {
+public class JsoupTemplate implements ITemplate {
 	
 	private String name = null;
 	private String html = null;
 	
 	private List<ContentElement> listTemplateElement  = new ArrayList<ContentElement>();
 	private List<ContentElement> listVariableElement  = new ArrayList<ContentElement>();
-//	private List<ContentElement> listPage   = null;
+	private List<String> listUrl;
 	
 	
 	public String getName() {
@@ -67,8 +66,7 @@ public class JsoupTemplate /*implements ITemplate*/ {
 //		}
 //		return listTypeRefContenu;
 //	}
-	
-	
+
 	/**
 	 * Les constructeurs
 	 * @param name
@@ -76,8 +74,7 @@ public class JsoupTemplate /*implements ITemplate*/ {
 	public JsoupTemplate(String name) {
 		this.name = name;
 	}
-	
-	
+
 	/* DEBUG */
 	public void afficheTemplateEle () {
 		for(ContentElement cte : listTemplateElement)
@@ -87,7 +84,19 @@ public class JsoupTemplate /*implements ITemplate*/ {
 		for(ContentElement cte : listVariableElement)
 			cte.affiche();
 	}
-	
+
+	public Map<String, Object> listTemplateMap(List<ContentElement> listElement) {
+		return null;
+	}
+
+	public void setListUrl(List<String> listUrl) {
+		this.listUrl = listUrl;
+	}
+
+	public List<String> getListUrl() {
+		return listUrl;
+	}
+
 }
 
 

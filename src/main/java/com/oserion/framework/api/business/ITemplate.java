@@ -7,18 +7,20 @@ import com.oserion.framework.api.business.beans.ContentElement;
 
 public interface ITemplate {
 
-	public String getName() ;
-	public void setName(String name) ;
-	public String getHtml() ;
-	public void setHtml(String html) ;
-	public List<ContentElement> getListTemplateElement() ;
-	public void setListTemplateElement(List<ContentElement> listTemplateElement) ;
-	public List<ContentElement> getListVariableElement() ;
-	public void setListVariableElement(List<ContentElement> listVariableElement) ;
+	String getName() ;
+	void setName(String name) ;
+	String getHtml() ;
+	void setHtml(String html) ;
+	List<ContentElement> getListTemplateElement() ;
+	void setListTemplateElement(List<ContentElement> listTemplateElement) ;
+	List<ContentElement> getListVariableElement() ;
+	void setListVariableElement(List<ContentElement> listVariableElement) ;
 
-	public void afficheTemplateEle();
-	public void afficheVariableTemplateEle();
-	public Map<String, Object> listTemplateMap(List<ContentElement> listElement);
+	void afficheTemplateEle();
+	void afficheVariableTemplateEle();
+	Map<String, Object> listTemplateMap(List<ContentElement> listElement);
+	void setListUrl(List<String> listUrl);
+	List<String> getListUrl();
 	
 }
 
