@@ -7,7 +7,8 @@ public class CodeReturn {
 		return "template " + templateName + " already exists. ";
 	}
 	
-	public static String error22 = new String ("no template with this name");
+	public static String
+			error22 = new String ("no template with this name");
 	public static String error23 = new String ("pageReference already in Collection, "
 			+ "you must destroy it if you want to link it to new template ");
 	public static String error24 = new String ("this ref is not a variable ref.");

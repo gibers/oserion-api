@@ -18,8 +18,8 @@ public interface ITemplate {
 //	public void setListVariableElement(List<ContentElement> listVariableElement) ;
 //
 	
-	List<PageReference> getListPage();
-	void setListPage(List<PageReference> listPage);
+	List<IPageReference> getListPage();
+	void setListPage(List<IPageReference> listPage);
 		
 //	public void afficheTemplateEle();
 //	public void afficheVariableTemplateEle();

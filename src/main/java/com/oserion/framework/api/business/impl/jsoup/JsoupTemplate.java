@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.oserion.framework.api.business.IPageReference;
 import com.oserion.framework.api.business.ITemplate;
 import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.beans.PageReference;
@@ -45,10 +46,10 @@ public class JsoupTemplate implements ITemplate {
 	public void setListVariableElement(List<ContentElement> listVariableElement) {
 		this.listVariableElement = listVariableElement;
 	}
-	public List<PageReference> getListPage() {
+	public List<IPageReference> getListPage() {
 		return listPage;
 	}
-	public void setListPage(List<PageReference> listPage) {
+	public void setListPage(List<IPageReference> listPage) {
 		this.listPage = listPage;
 	}
 	

@@ -1,5 +1,6 @@
 package com.oserion.framework.api.business.beans;
 
+import com.oserion.framework.api.business.IPageReference;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -8,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.oserion.framework.api.business.impl.beansDB.Template;
 
 @Document
-public class PageReference {
+public class PageReference implements IPageReference{
 
 	@Id
     private String id;	
