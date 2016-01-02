@@ -74,7 +74,8 @@ public class App  {
 
 //		a418f.removeTemplate("fichierTestHtml1");
 		
-		supervision.listContentElementFromTemplateName("fichierTestHtml1");
+//		supervision.listContentElementFromTemplateName("fichierTestHtml1");
+		supervision.listPageFromTemplateName("fichierTestHtml1");
 		
 		
 //		System.out.println(a418f.getFullTemplateFromName("/bernard/toto8"));

@@ -5,14 +5,11 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -64,6 +61,155 @@ public class Api418Facade {
 		List<ContentElement> newlistElement = jStemplate1.getListTemplateElement();
 		List<ContentElement> oldlistElement = t1.getListTemplateElement();
 		
+		List<ContentElement> newlistVariableElement = jStemplate1.getListVariableElement();
+		List<ContentElement> oldlistVariableElement = filtrer(t1.getListVariableElement());
+		
+		
+		majContentTemplateElement( t1, newlistElement, oldlistElement );
+		majContentVariableElement( t1, newlistVariableElement, oldlistVariableElement );
+
+		
+		t1.setHtml(jStemplate1.getHtml());
+		mongoOperation.save(t1);
+		return "ok";
+	}
+	
+
+	private List<ContentElement> filtrer(List<ContentElement> newlistVariableElement) {
+		List<ContentElement> listCte = new ArrayList<ContentElement>();
+		for (ContentElement cte : newlistVariableElement ) {
+			if(cte.getRef().contains("_ref:page")) 
+				listCte.add(cte);
+		}
+		return listCte;
+	}
+
+
+	private void majContentVariableElement(Template t1, List<ContentElement> newlistElement, List<ContentElement> oldlistElement) {
+		List<ContentElement> newlistElementAModifier = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementARajouter = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementASupprimer = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementTraiter = new ArrayList<ContentElement>();
+		
+		for(ContentElement ctenew : newlistElement ) {
+			boolean flag = false;
+			for(ContentElement cteold : oldlistElement ) {
+				if(ctenew.getRef().equalsIgnoreCase(cteold.getRef())) {
+					if(!ctenew.getType().equalsIgnoreCase(cteold.getType())) {
+						newlistElementAModifier.add(ctenew);
+					}
+					newlistElementTraiter.add(cteold);
+					flag = true;
+					break;
+				}
+			}
+			if(!flag)
+				newlistElementARajouter.add(ctenew);
+		}
+
+		for(ContentElement cteold : oldlistElement) {
+			if(!newlistElementTraiter.contains(cteold))
+				newlistElementASupprimer.add(cteold);
+		}
+
+		System.out.println("element à modifier ");
+		for(ContentElement cte : newlistElementAModifier) {
+			System.out.println(" ref : " + cte.getRef() );
+			System.out.println(" type : " + cte.getType() );
+			System.out.println(" value : " + cte.getValue() );
+		}
+		System.out.println(" ----------------------- ");
+			
+		System.out.println("element à rajouter ");
+		for(ContentElement cte : newlistElementARajouter) {
+			System.out.println(" ref : " + cte.getRef() );
+			System.out.println(" type : " + cte.getType() );
+			System.out.println(" value : " + cte.getValue() );
+		}
+		System.out.println(" ----------------------- ");
+
+		System.out.println("element à traiter ");
+		for(ContentElement cte : newlistElementTraiter) {
+			System.out.println(" ref : " + cte.getRef() );
+			System.out.println(" type : " + cte.getType() );
+			System.out.println(" value : " + cte.getValue() );
+		}
+		System.out.println(" ----------------------- ");
+
+		System.out.println("element à supprimer ");
+		for(ContentElement cte : newlistElementASupprimer) {
+			System.out.println(" ref : " + cte.getRef() );
+			System.out.println(" type : " + cte.getType() );
+			System.out.println(" value : " + cte.getValue() );
+		}
+		System.out.println(" ----------------------- ");
+
+		List<Integer> listKey = listKeyFromTemplateName(t1.getName());
+		
+		
+		for( ContentElement cte : newlistElementARajouter ) {
+			t1.getListVariableElement().add(cte);
+			mongoOperation.insert(cte);
+			mongoOperation.save(t1);
+			addListVariableElement(t1, cte, listKey);
+		}
+		
+		for( ContentElement cte : newlistElementASupprimer ) {
+			removeVariableContentElementFromListKey(t1, cte, listKey);
+//			for(int key : listKey)
+//				removeContentElementToKey(t1, key);
+//			mongoOperation.remove(cte);
+//			t1.getListVariableElement().remove(cte);
+		}
+		
+		for( ContentElement cte : newlistElementAModifier ) {
+			updateVariableContentElementFromListKey(t1, cte, listKey);
+		}
+			
+//			Query q2 = new Query(Criteria.where("ref").is(cte.getRef()));
+//			ContentElement t2 = (ContentElement) mongoOperation.findOne(q2, ContentElement.class);
+//			t2.setType(cte.getType());
+//			mongoOperation.save(t1);
+		
+	}
+	
+	
+	private void removeVariableContentElementFromListKey(Template t1, ContentElement cte, List<Integer> listKey) {
+		List<String> listRefTotal = new ArrayList<String>();
+		List<ContentElement> listCteASupprimer = new ArrayList<ContentElement>();
+		listRefTotal.add(cte.getRef());
+		for(int i : listKey) {
+			listRefTotal.add(cte.getRef().replaceFirst("ref:page", String.valueOf(i)) );
+		}
+		for(ContentElement localcte : t1.getListVariableElement()) {
+			if(listRefTotal.contains(localcte.getRef())) {
+				listCteASupprimer.add(localcte);
+				mongoOperation.remove(localcte);
+			}
+		}
+		t1.getListVariableElement().removeAll(listCteASupprimer);
+		mongoOperation.save(t1);
+	}
+
+
+	private void updateVariableContentElementFromListKey(Template t1, ContentElement cte, List<Integer> listKey) {
+		List<String> listRefTotal = new ArrayList<String>();
+		listRefTotal.add(cte.getRef());
+		for(int i : listKey) {
+			listRefTotal.add(cte.getRef().replaceFirst("ref:page", String.valueOf(i)) );
+		}
+		
+		for(ContentElement localcte : t1.getListVariableElement()) {
+			if(listRefTotal.contains(localcte.getRef())) {
+				localcte.setType(cte.getType());
+				mongoOperation.save(localcte);
+			}
+		}
+	}
+	
+
+
+	private void majContentTemplateElement(Template t1, List<ContentElement> newlistElement, List<ContentElement> oldlistElement) {
 		List<ContentElement> newlistElementAModifier = new ArrayList<ContentElement>();
 		List<ContentElement> newlistElementARajouter = new ArrayList<ContentElement>();
 		List<ContentElement> newlistElementASupprimer = new ArrayList<ContentElement>();
@@ -89,7 +235,7 @@ public class Api418Facade {
 			if(!newlistElementTraiter.contains(cteold))
 				newlistElementASupprimer.add(cteold);
 		}
-
+		
 		for( ContentElement cte : newlistElementARajouter ) {
 			System.out.println("rajout de l'element => " + cte.getRef());
 			mongoOperation.insert(cte);
@@ -102,16 +248,11 @@ public class Api418Facade {
 		for( ContentElement cte : newlistElementAModifier ) {
 			Query q2 = new Query(Criteria.where("ref").is(cte.getRef()));
 			ContentElement t2 = (ContentElement) mongoOperation.findOne(q2, ContentElement.class);
-
-//			mongoOperation.updateFirst(q2, arg1, arg2);
-			t1.getListTemplateElement().remove(cte);
+			t2.setType(cte.getType());
+			mongoOperation.save(t2);
 		}
-		
-		t1.setHtml(jStemplate1.getHtml());
-		mongoOperation.save(t1);
-		return "ok";
 	}
-	
+
 
 	public String insertTemplate(String templateName, String fluxTemplate) {
 
@@ -155,6 +296,36 @@ public class Api418Facade {
 
 		return null;
 	}
+
+	
+	/**
+	 * A partir d'un nom de template, on renvoie une liste des pageReferences qui contiennent ce template.
+	 * 
+	 * @param templateName : nom du template.
+	 * @return liste vide si le nom du template passé n'existe pas. 
+	 */
+	public List<PageReference> listPageReferenceFromTemplateName(String templateName) {
+		List<PageReference> mylistPageReference = new ArrayList<PageReference>();
+		Query q1 = new Query(Criteria.where("name").is(templateName));
+		Template t1 = (Template) mongoOperation.findOne(q1, Template.class);
+		if(t1 == null) return mylistPageReference; // on retourne une liste vide, si pas de template sous ce nom.
+		
+		Query q2 = new Query(Criteria.where("template").is(t1));
+		mylistPageReference = (List<PageReference>) mongoOperation.find(q2, PageReference.class);
+		
+		return mylistPageReference;
+	}
+	
+	
+	public List<Integer> listKeyFromTemplateName(String templateName) {
+		List<Integer> listKey = new ArrayList<Integer>();
+		List<PageReference> mylistPageReference = listPageReferenceFromTemplateName(templateName);
+		for(PageReference p : mylistPageReference) {
+			listKey.add(p.getKey());
+		}
+		return listKey;
+	}
+	
 
 	/**
 	 * 
@@ -289,24 +460,15 @@ public class Api418Facade {
 	 * return null si OK .
 	 * 
 	 */
-	public String addListVariableElement(String templateName, String ref, Type type, String value) {
-		//Si pas de motif à remplacer dans ref, on sort.
-		if(!ref.contains("_ref:page"))
-			return CodeReturn.error24;
-		//Si template n'existe pas, on sort.
-		Query q1 = new Query(Criteria.where("name").is(templateName));
-		Template t1 = (Template) mongoOperation.findOne(q1, Template.class);
+	public String addListVariableElement(Template t1, ContentElement cte, List<Integer> listKey) {
 		if(t1 == null) {
 			return CodeReturn.error22;
 		}
-		//récupérer la liste des keys utilisés par ce template. 
-		q1 = new Query(Criteria.where("template").is(t1));
-		List<PageReference> lp1 = (List<PageReference>) mongoOperation.find(q1, PageReference.class);
-		for(PageReference p1 : lp1) {
-			String refmodif = ref.replaceFirst("_ref:page", "_"+p1.getKey());
-			ContentElement cte = new ContentElement(refmodif, type.name(), value);
-			mongoOperation.insert(cte);
-			t1.getListVariableElement().add(cte);
+		for(int key : listKey) {
+			String refmodif = cte.getRef().replaceFirst("_ref:page", "_"+key);
+			ContentElement ncte = new ContentElement(refmodif, cte.getType(), cte.getValue());
+			mongoOperation.insert(ncte);
+			t1.getListVariableElement().add(ncte);
 		}
 		mongoOperation.save(t1);
 		//créer autant de ContentElement qu'il y a de key.

@@ -16,7 +16,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.oserion.framework.api.Api418Facade;
@@ -31,7 +33,9 @@ import com.oserion.framework.api.util.Supervision;
 @ContextConfiguration(classes=OserionBuilder.class)
 public class AppTest {
 
-//    public static final String PROPERTY_CONFIG_PATH = "oserion.config.path";
+    public static final String PROPERTY_CONFIG_PATH = "oserion.config.path";
+    
+    private File f1 = new File("C:\\Users\\Jean-Baptiste\\Documents\\oserion\\fichierTestHtml1.html"); 
     
 	@Autowired
 	private Api418Facade a418f;
@@ -41,24 +45,26 @@ public class AppTest {
 	
 	@BeforeClass
     public static void avantTests() {
+		
+		// Si lancement avec mvn, on sort, car les variables systèmes sont déjà initialisées.
+		if(System.getProperty("skipTests") != null) return;
         System.out.println("------------------------");
         System.out.println("Avant Tests");
         System.out.println("------------------------");
-//		FileInputStream configFile;
-//		try {
-//			configFile = new FileInputStream(System.getProperty(AppTest.PROPERTY_CONFIG_PATH));
-//			System.getProperties().load(configFile);
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		FileInputStream configFile;
+		try {
+			configFile = new FileInputStream(System.getProperty(AppTest.PROPERTY_CONFIG_PATH));
+			System.getProperties().load(configFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 		System.out.println(" ===> " + System.getProperty("database.host"));
     }
 	
 //	@Test
 	public void testInsertOrUpdateTemplate() {
-		File f1 = new File("C:\\Users\\Jean-Baptiste\\Documents\\oserion\\fichierTestHtml1.html");
 		String strTemplate = null;
 		try {
 			strTemplate = FileUtils.readFileToString(f1);
@@ -73,9 +79,9 @@ public class AppTest {
 		assertTrue(true);
 	}
 	
+	
 //	@Test 
 	public void updateTemplate () {
-		File f1 = new File("C:\\Users\\Jean-Baptiste\\Documents\\oserion\\fichierTestHtml1.html");
 		String strTemplate = null;
 		try {
 			strTemplate = FileUtils.readFileToString(f1);
@@ -83,16 +89,26 @@ public class AppTest {
 			e.printStackTrace();
 		}
 		String templateName = FilenameUtils.removeExtension( f1.getName());
-  
 		a418f.updateTemplate(templateName , strTemplate);
-		
+	}
+	
+	
+//	@Test
+	public void addPageUrl() {
+		String templateName = FilenameUtils.removeExtension( f1.getName());
+		a418f.addPageUrl(templateName, "/toto/titi");
 	}
 	
 
 	@Test
 	public void testSupervision() {
-		supervision.listContentElementFromTemplateName("fichierTestHtml1");
+		String templateName = FilenameUtils.removeExtension( f1.getName());
+		
+		supervision.listContentElementFromTemplateName(templateName);
+//		supervision.listPageFromTemplateName(templateName);
 	}
+	
+	
 	
 }
 

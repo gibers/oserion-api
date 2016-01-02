@@ -40,8 +40,8 @@ public class JsoupTemplificator /*implements ITemplificator*/ {
 		template.setHtml(fluxTemplate);
 		splitContenu(fluxTemplate, template);
 
-		template.afficheTemplateEle();
-		template.afficheVariableTemplateEle();
+//		template.afficheTemplateEle();
+//		template.afficheVariableTemplateEle();
 
 		return template;
 	}
@@ -56,22 +56,60 @@ public class JsoupTemplificator /*implements ITemplificator*/ {
 	 */
 	public void splitContenu(String fluxTemplate, JsoupTemplate template ) {
 		Document docJsoup = Jsoup.parse(fluxTemplate);
-		Elements ele = docJsoup.select(".editable");
+		Elements ele = getAllElement(docJsoup);
 		System.out.println("taille ele => " + ele.size());
 
 		Iterator<Element> it = ele.iterator();
 		while(it.hasNext()) {
 			Element balise = it.next();
+			String type = getClassBalise(balise);
 			if(balise.id().contains("ref:")) {
-				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE.toString() , balise.html());
+				ContentElement cte = new ContentElement(balise.id(), type , balise.html());
 				//				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE.toString());
 				template.getListVariableElement().add(cte);
 			} else if (!balise.id().isEmpty()) {
-				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE.toString() , balise.html());
+				ContentElement cte = new ContentElement(balise.id(), type , balise.html());
 				//				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE.toString());
 				template.getListTemplateElement().add(cte);
 			}
 		}
+	}
+	
+	
+	/**
+	 * la fct retourne la liste de toutes les balises qui contiennent au moins une des classes css
+	 * contenue dans l'enumération {@link Type} . 
+	 * 
+	 * @param docJsoup
+	 * @return
+	 */
+	private Elements getAllElement(Document docJsoup) {
+		Elements listEle = null;
+		Type[] lesTypes = ContentElement.Type.values();
+		for(int i=0;i<lesTypes.length;i++) {
+			if(listEle == null)
+				listEle = docJsoup.select("."+lesTypes[i].name());
+			else 
+				listEle.addAll(docJsoup.select("."+lesTypes[i].name()));
+		}
+		return listEle;
+	}
+	
+
+	/**
+	 * La fct parcourt l'ensemble des {@link Type} 
+	 * afin de le comparer avec celui de la balise passée en paramètre.
+	 * Si la balise contient un des types, celui-ci est retourné sous forme de String.
+	 * @param ele
+	 * @return
+	 */
+	private String getClassBalise(Element ele) {
+		Type[] lesTypes = ContentElement.Type.values();
+		for(int i=0;i<lesTypes.length;i++) {
+			if(ele.hasClass(lesTypes[i].name())) 
+				return lesTypes[i].name();
+		}
+		return null;
 	}
 
 

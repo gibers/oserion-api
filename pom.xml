@@ -13,7 +13,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	    <skipTests>true</skipTests>
+		<skipTests>true</skipTests>
 	</properties>
 
 	<dependencies>
@@ -67,12 +67,12 @@
 			<version>1.8.3</version>
 		</dependency>
 
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>1.4</version>
-        </dependency>
-        
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -92,6 +92,9 @@
 				<configuration>
 					<skipTests>${skipTests}</skipTests>
 					<systemPropertiesFile>C:\Users\Jean-Baptiste\Documents\oserion\oserion-web\config.properties</systemPropertiesFile>
+<!-- 					<systemPropertyVariables> -->
+<!-- 						<lancementMVN>oui</lancementMVN> -->
+<!-- 					</systemPropertyVariables> -->
 				</configuration>
 			</plugin>
 
