@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import com.oserion.framework.api.business.IPageReference;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.BeforeClass;
@@ -101,7 +102,7 @@ public class AppTest {
 		for( ITemplate it : listITemplate) {
 			System.out.println("nom TEMPLATE : " + it.getName());
 			if(it.getListPage() != null)
-				for(PageReference p1 : it.getListPage()) {
+				for(IPageReference p1 : it.getListPage()) {
 					System.out.println(" ** URL : " + p1.getUrl() );
 					System.out.println(" ** KEY : " + p1.getKey() );
 				}
