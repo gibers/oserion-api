@@ -5,7 +5,6 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.oserion.framework.api.Api418Facade;
 import com.oserion.framework.api.business.IDBConnection;
-import com.oserion.framework.api.business.impl.mongo.MongoDBConnection;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
