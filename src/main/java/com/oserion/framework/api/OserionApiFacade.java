@@ -28,7 +28,7 @@ import com.oserion.framework.api.util.CodeReturn;
 
 
 @Component
-public class Api418Facade {
+public class OserionApiFacade {
 
 	private static final Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

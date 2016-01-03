@@ -1,16 +1,11 @@
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
+import com.oserion.framework.api.OserionApiFacade;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.oserion.framework.api.Api418Facade;
-import com.oserion.framework.api.business.IDBConnection;
-import com.oserion.framework.api.business.beans.ContentElement.Type;
 import com.oserion.framework.api.business.impl.beansDB.Template;
 import com.oserion.framework.api.util.MyLogger;
 import com.oserion.framework.api.util.OserionBuilder;
@@ -38,7 +33,7 @@ public class App  {
 		
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(OserionBuilder.class);
 		
-		Api418Facade a418f = context.getBean(Api418Facade.class);
+		OserionApiFacade a418f = context.getBean(OserionApiFacade.class);
 		Supervision supervision = context.getBean(Supervision.class);
 		
 				
@@ -114,7 +109,7 @@ public class App  {
 				
 		
 //		IDBConnection idbc = new OserionBuilder().buildDBConnection();
-       /* Api418Facade facade = new Api418Facade(idbc);
+       /* OserionApiFacade facade = new OserionApiFacade(idbc);
         
 		
 		String fluxTemplate = "<div><div id='monid1' class='bernard editable'>ceci est du <p>texte</p> </div><div id='monid2_ref:page' class='bernard editable'>ceci est un autre <p>texte</p> </div></div>";

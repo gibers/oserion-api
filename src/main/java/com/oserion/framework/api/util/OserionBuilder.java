@@ -1,11 +1,7 @@
 package com.oserion.framework.api.util;
 
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import com.oserion.framework.api.Api418Facade;
-import com.oserion.framework.api.business.IDBConnection;
-import com.oserion.framework.api.business.impl.mongo.MongoDBConnection;
+import com.oserion.framework.api.OserionApiFacade;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,11 +10,6 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-import com.oserion.framework.api.business.IDataHandler;
-import com.oserion.framework.api.business.ITemplificator;
-import com.oserion.framework.api.business.impl.jsoup.JsoupTemplificator;
-import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
 
 @EnableMongoRepositories
 @Configuration
@@ -48,8 +39,8 @@ public class OserionBuilder {
 //	}
 
 	@Bean
-	public Api418Facade buildApi418Facade() {
-		return new Api418Facade();
+	public OserionApiFacade buildApi418Facade() {
+		return new OserionApiFacade();
 	}
 
 //	@Bean

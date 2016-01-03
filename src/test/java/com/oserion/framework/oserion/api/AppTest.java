@@ -16,9 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.oserion.framework.api.Api418Facade;
+import com.oserion.framework.api.OserionApiFacade;
 import com.oserion.framework.api.business.ITemplate;
-import com.oserion.framework.api.business.beans.PageReference;
 import com.oserion.framework.api.util.OserionBuilder;
 import com.oserion.framework.api.util.Supervision;
 
@@ -35,7 +34,7 @@ public class AppTest {
     private File f1 = new File("C:\\Users\\Jean-Baptiste\\Documents\\oserion\\fichierTestHtml1.html"); 
     
 	@Autowired
-	private Api418Facade a418f;
+	private OserionApiFacade a418f;
 	
 	@Autowired
 	private Supervision supervision;
