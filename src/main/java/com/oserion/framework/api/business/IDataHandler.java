@@ -8,6 +8,7 @@ import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.beans.ContentElement.Type;
 import com.oserion.framework.api.business.beans.PageReference;
 import com.oserion.framework.api.business.impl.beansDB.Template;
+import com.oserion.framework.api.business.impl.jsoup.JsoupTemplate;
 
 //@Component
 public interface IDataHandler {
@@ -29,6 +30,7 @@ public interface IDataHandler {
 	ContentElement modifyValueOfContentElement(List<ContentElement> listComplete,
 			String ref, String type, String newValue);
 	int removeTemplate(Template t1);
+	Template updateTemplate(Template t1, JsoupTemplate jStemplate);
 	
 	
 //	boolean insertOrUpdateTemplate(ITemplate template);

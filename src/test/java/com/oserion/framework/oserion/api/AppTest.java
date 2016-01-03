@@ -156,10 +156,12 @@ public class AppTest {
 		
 //		insertTemplate();
 		
+		updateTemplate();
+		
 //		a418f.addPageUrl(templateName, "bobo/titi");
 //		a418f.addPageUrl(templateName, "bertrand1");
 		
-		assertTrue(a418f.removeTemplate(templateName) == 2);
+//		assertTrue(a418f.removeTemplate(templateName) == 2);
 
 		supervision.listContentElementFromTemplateName(templateName);
 //		supervision.listPageFromTemplateName(templateName);

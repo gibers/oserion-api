@@ -30,6 +30,7 @@ import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.beans.ContentElement.Type;
 import com.oserion.framework.api.business.beans.PageReference;
 import com.oserion.framework.api.business.impl.beansDB.Template;
+import com.oserion.framework.api.business.impl.jsoup.JsoupTemplate;
 import com.oserion.framework.api.util.CodeReturn;
 
 import org.springframework.stereotype.Component;
@@ -68,6 +69,28 @@ public class MongoDBDataHandler implements IDataHandler {
 		return p1;
 	}
 
+	
+	/**
+	 * A partir d'un nom de template, on renvoie une liste des pageReferences qui contiennent ce template.
+	 * 
+	 * @param templateName : nom du template.
+	 * @return liste vide si le nom du template passé n'existe pas. 
+	 */
+	public List<PageReference> getPageReferencesFromTemplateName(String templateName) {
+		List<PageReference> mylistPageReference = new ArrayList<PageReference>();
+		Template t1 = getTemplateFromDB(templateName);
+		if(t1 == null) return mylistPageReference; // on retourne une liste vide, si pas de template sous ce nom.
+		
+		return getPageReferences(t1);
+	}
+
+	public List<PageReference> getPageReferences(Template t1) {
+		List<PageReference> mylistPageReference = new ArrayList<PageReference>();
+		Query q2 = new Query(Criteria.where("template").is(t1));
+		mylistPageReference = (List<PageReference>) mongoOperation.find(q2, PageReference.class);
+		
+		return mylistPageReference;
+	}
 
 	/**
 	 * Retourne L'objet Template de la base. 
@@ -90,8 +113,8 @@ public class MongoDBDataHandler implements IDataHandler {
 	 */
 	private ContentElement getContentElementInDB(ContentElement cte) {
 		if(cte == null) return null;
-		Query q1 = new Query(Criteria.where("ref").is(cte.getRef())
-				.andOperator(Criteria.where("type").is(cte.getType())));
+		Query q1 = new Query(Criteria.where("ref").is(cte.getRef()));
+//				.andOperator(Criteria.where("type").is(cte.getType())));
 
 		ContentElement newcte = (ContentElement) mongoOperation.findOne(q1, ContentElement.class);
 		if(newcte == null) return null;
@@ -106,7 +129,8 @@ public class MongoDBDataHandler implements IDataHandler {
 				mongoOperation.insert(cte);
 				t1.getListTemplateElement().add(cte);
 			} else {
-				t1.getListTemplateElement().add(newcte);
+				if(!t1.getListTemplateElement().contains(newcte))
+					t1.getListTemplateElement().add(newcte);
 			}
 		}
 		mongoOperation.save(t1);
@@ -116,10 +140,11 @@ public class MongoDBDataHandler implements IDataHandler {
 		for(ContentElement cte : listTemplateElement) {
 			ContentElement newcte = getContentElementInDB(cte);
 			if(newcte == null) {
-				mongoOperation.insert(cte);
+				mongoOperation.save(cte);
 				t1.getListVariableElement().add(cte);
 			} else {
-				t1.getListVariableElement().add(newcte);
+				if(!t1.getListVariableElement().contains(newcte))
+					t1.getListVariableElement().add(newcte);
 			}
 		}
 		mongoOperation.save(t1);		
@@ -157,14 +182,14 @@ public class MongoDBDataHandler implements IDataHandler {
 			mongoOperation.remove(p1);
 		}
 	}
-	
+
 
 	public int removeTemplate(Template t1) {
 		List<PageReference> listPageReference = getAllPageReferenceWithTemplate(t1);
-//		List<ContentElement> listComplete = t1.getListTemplateElement();
-//		listComplete.addAll(t1.getListVariableElement());
-//		for(ContentElement cte : listComplete) 
-//			mongoOperation.remove(cte);
+		//		List<ContentElement> listComplete = t1.getListTemplateElement();
+		//		listComplete.addAll(t1.getListVariableElement());
+		//		for(ContentElement cte : listComplete) 
+		//			mongoOperation.remove(cte);
 
 		int nb = 0;
 		for(PageReference pr1 : listPageReference) {
@@ -176,32 +201,247 @@ public class MongoDBDataHandler implements IDataHandler {
 	}
 
 
+	public Template updateTemplate(Template t1, JsoupTemplate jStemplate) {
+		List<ContentElement> newlistElement = jStemplate.getListTemplateElement();
+		List<ContentElement> oldlistElement = t1.getListTemplateElement();
+		
+		List<ContentElement> newlistVariableElement = jStemplate.getListVariableElement();
+		List<ContentElement> oldlistVariableElement = filtrer(t1.getListVariableElement());
+		
+		majContentTemplateElement( t1, newlistElement, oldlistElement );
+		majContentVariableElement( t1, newlistVariableElement, oldlistVariableElement );
+		
+		t1.setHtml(jStemplate.getHtml());
+		mongoOperation.save(t1);
+		return t1;
+	}
+	
+
+	public ContentElement modifyValueOfContentElement(List<ContentElement> listComplete, String ref, String type, String newValue) {
+		for(ContentElement cte : listComplete) {
+			if(cte.getType().equalsIgnoreCase(type) && cte.getRef().equalsIgnoreCase(ref) ) {
+				cte.setValue(newValue);
+				mongoOperation.save(cte);
+				return cte ;
+			}
+		}
+		return null;
+	}
+	
+	private void majContentTemplateElement(Template t1, List<ContentElement> newlistElement, List<ContentElement> oldlistElement) {
+		List<ContentElement> newlistElementAModifier = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementARajouter = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementASupprimer = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementTraiter = new ArrayList<ContentElement>();
+		
+		for(ContentElement ctenew : newlistElement ) {
+			boolean flag = false;
+			for(ContentElement cteold : oldlistElement ) {
+				if(ctenew.getRef().equalsIgnoreCase(cteold.getRef())) {
+					if(!ctenew.getType().equalsIgnoreCase(cteold.getType())) {
+						newlistElementAModifier.add(ctenew);
+					}
+					newlistElementTraiter.add(cteold);
+					flag = true;
+					break;
+				}
+			}
+			if(!flag)
+				newlistElementARajouter.add(ctenew);
+		}
+		
+		for(ContentElement cteold : oldlistElement) {
+			if(!newlistElementTraiter.contains(cteold))
+				newlistElementASupprimer.add(cteold);
+		}
+		
+		// rajout des éléments.
+		insertListTemplateElementToTemplate(t1, newlistElementARajouter);
+		
+		for( ContentElement cte : newlistElementASupprimer ) {
+//			mongoOperation.remove(cte);
+			t1.getListTemplateElement().remove(cte);
+		}
+		for( ContentElement cte : newlistElementAModifier ) {
+			Query q2 = new Query(Criteria.where("ref").is(cte.getRef()));
+			ContentElement t2 = (ContentElement) mongoOperation.findOne(q2, ContentElement.class);
+			t2.setType(cte.getType());
+			mongoOperation.save(t2);
+		}
+	}
+	
+
+	private void majContentVariableElement(Template t1, List<ContentElement> newlistElement, List<ContentElement> oldlistElement) {
+		List<ContentElement> newlistElementAModifier = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementARajouter = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementASupprimer = new ArrayList<ContentElement>();
+		List<ContentElement> newlistElementTraiter = new ArrayList<ContentElement>();
+		
+		for(ContentElement ctenew : newlistElement ) {
+			boolean flag = false;
+			for(ContentElement cteold : oldlistElement ) {
+				if(ctenew.getRef().equalsIgnoreCase(cteold.getRef())) {
+					if(!ctenew.getType().equalsIgnoreCase(cteold.getType())) {
+						newlistElementAModifier.add(ctenew);
+					}
+					newlistElementTraiter.add(cteold);
+					flag = true;
+					break;
+				}
+			}
+			if(!flag)
+				newlistElementARajouter.add(ctenew);
+		}
+
+		for(ContentElement cteold : oldlistElement) {
+			if(!newlistElementTraiter.contains(cteold))
+				newlistElementASupprimer.add(cteold);
+		}
+
+		System.out.println("element à modifier ");
+		for(ContentElement cte : newlistElementAModifier) {
+			System.out.println(" ref : " + cte.getRef() );
+			System.out.println(" type : " + cte.getType() );
+			System.out.println(" value : " + cte.getValue() );
+		}
+		System.out.println(" ----------------------- ");
+			
+		System.out.println("element à rajouter ");
+		for(ContentElement cte : newlistElementARajouter) {
+			System.out.println(" ref : " + cte.getRef() );
+			System.out.println(" type : " + cte.getType() );
+			System.out.println(" value : " + cte.getValue() );
+		}
+		System.out.println(" ----------------------- ");
+
+		System.out.println("element à traiter ");
+		for(ContentElement cte : newlistElementTraiter) {
+			System.out.println(" ref : " + cte.getRef() );
+			System.out.println(" type : " + cte.getType() );
+			System.out.println(" value : " + cte.getValue() );
+		}
+		System.out.println(" ----------------------- ");
+
+		System.out.println("element à supprimer ");
+		for(ContentElement cte : newlistElementASupprimer) {
+			System.out.println(" ref : " + cte.getRef() );
+			System.out.println(" type : " + cte.getType() );
+			System.out.println(" value : " + cte.getValue() );
+		}
+		System.out.println(" ----------------------- ");
+
+		List<Integer> listKey = listKeyFromTemplateName(t1);
+		
+		// élément à rajouter.
+		addContentElementToKey(t1, newlistElementARajouter, listKey);
+		
+		for( ContentElement cte : newlistElementASupprimer ) 
+			removeVariableContentElementFromListKey(t1, cte, listKey);
+		
+		for( ContentElement cte : newlistElementAModifier ) {
+			updateVariableContentElementFromListKey(t1, cte, listKey);
+		}
+			
+//			Query q2 = new Query(Criteria.where("ref").is(cte.getRef()));
+//			ContentElement t2 = (ContentElement) mongoOperation.findOne(q2, ContentElement.class);
+//			t2.setType(cte.getType());
+//			mongoOperation.save(t1);
+		
+	}
+
+	
+	public List<Integer> listKeyFromTemplateName(Template t1) {
+		List<Integer> listKey = new ArrayList<Integer>();
+		
+		List<PageReference> mylistPageReference = getPageReferences(t1);
+		if(mylistPageReference == null) return listKey;
+		for(PageReference p : mylistPageReference) {
+			listKey.add(p.getKey());
+		}
+		return listKey;
+	}
+
+	
+	private List<ContentElement> filtrer(List<ContentElement> newlistVariableElement) {
+		List<ContentElement> listCte = new ArrayList<ContentElement>();
+		for (ContentElement cte : newlistVariableElement ) {
+			if(cte.getRef().contains("_ref:page")) 
+				listCte.add(cte);
+		}
+		return listCte;
+	}
+
 	private List<PageReference> getAllPageReferenceWithTemplate(Template t1) {
 		Query q1 = new Query(Criteria.where("template").is(t1));
 		List<PageReference> lp = (List<PageReference>) mongoOperation.find(q1, PageReference.class);
 		return lp;
 	}
 
+
+	private void removeVariableContentElementFromListKey(Template t1, ContentElement cte, List<Integer> listKey) {
+		List<String> listRefTotal = new ArrayList<String>();
+		List<ContentElement> listCteASupprimer = new ArrayList<ContentElement>();
+		listRefTotal.add(cte.getRef());
+		for(int i : listKey) {
+			listRefTotal.add(cte.getRef().replaceFirst("ref:page", String.valueOf(i)) );
+		}
+		for(ContentElement localcte : t1.getListVariableElement()) {
+			if(listRefTotal.contains(localcte.getRef())) {
+				listCteASupprimer.add(localcte);
+//				mongoOperation.remove(localcte);
+			}
+		}
+		t1.getListVariableElement().removeAll(listCteASupprimer);
+		mongoOperation.save(t1);
+	}
+	
+	
+	private void updateVariableContentElementFromListKey(Template t1, ContentElement cte, List<Integer> listKey) {
+		List<String> listRefTotal = new ArrayList<String>();
+		listRefTotal.add(cte.getRef());
+		for(int i : listKey) {
+			listRefTotal.add(cte.getRef().replaceFirst("ref:page", String.valueOf(i)) );
+		}
+		
+		for(ContentElement localcte : t1.getListVariableElement()) {
+			if(listRefTotal.contains(localcte.getRef())) {
+				localcte.setType(cte.getType());
+				mongoOperation.save(localcte);
+			}
+		}
+	}
+	
+	
 	/**
 	 * 
 	 * @param t1 
 	 * @param key
 	 */
 	private void addContentElementToKey(Template t1, int key) {
-		List<ContentElement> listContentVariable = t1.getListVariableElement();
+		List<ContentElement> listContentVariable = filtrer(t1.getListVariableElement());
+		List<Integer> listKey = new ArrayList<Integer>();
+		listKey.add(key);
+		addContentElementToKey(t1,listContentVariable, listKey);
+	}
 
+	
+	private void addContentElementToKey(Template t1, List<ContentElement> listContentVariable, List<Integer> listKey) {
 		List<ContentElement> newListContentElement = new ArrayList<ContentElement>();
-		for (ContentElement cte : listContentVariable) {
-			if(cte.getRef().contains("ref:page")) {
+		for(int key : listKey)
+			for (ContentElement cte : listContentVariable) {
 				String newRef = cte.getRef().replaceFirst("ref:page", String.valueOf(key));
 				ContentElement ncte = new ContentElement(newRef, cte.getType(), cte.getValue());
 				newListContentElement.add(ncte);
 			}
+		for (ContentElement cte : listContentVariable) {
+			ContentElement ncte = new ContentElement(cte.getRef(), cte.getType(), cte.getValue());
+			newListContentElement.add(ncte);
 		}
+
 		insertListVariableElementToTemplate(t1, newListContentElement);
 	}
 
-	
+
 	/**
 	 * Appelé lorsque l'on supprime une pageReference. Il faut décrocher les contentElement 
 	 * variabilisés du template. Les ContentElements ne sont pas supprimés de la base .
@@ -215,7 +455,7 @@ public class MongoDBDataHandler implements IDataHandler {
 		for(ContentElement cte : listVariableElement) {
 			if(cte.getRef().contains("_"+key)) {
 				listVarEleASupp.add(cte);
-//				mongoOperation.remove(cte);
+				//				mongoOperation.remove(cte);
 			}
 		}
 		template.getListVariableElement().removeAll(listVarEleASupp);
@@ -239,19 +479,6 @@ public class MongoDBDataHandler implements IDataHandler {
 		}
 		return firstKey;
 	}
-
-	
-	public ContentElement modifyValueOfContentElement(List<ContentElement> listComplete, String ref, String type, String newValue) {
-		for(ContentElement cte : listComplete) {
-			if(cte.getType().equalsIgnoreCase(type) && cte.getRef().equalsIgnoreCase(ref) ) {
-				cte.setValue(newValue);
-				mongoOperation.save(cte);
-				return cte ;
-			}
-		}
-		return null;
-	}
-
 
 }
 
