@@ -10,7 +10,7 @@ import com.oserion.framework.api.business.ITemplificator;
 import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.beans.ContentElement.Type;
 import com.oserion.framework.api.business.beans.PageReference;
-import com.oserion.framework.api.business.impl.beansDB.Template;
+import com.oserion.framework.api.business.impl.mongo.beans.MongoTemplate;
 import com.oserion.framework.api.util.CodeReturn;
 
 import org.jsoup.Jsoup;
@@ -38,10 +38,10 @@ public class JsoupTemplificator implements ITemplificator {
 
 	
 	public List<ITemplate> selectTemplates() {
-		List<Template> listTemplate = mongoOperation.findAll(Template.class);
+		List<MongoTemplate> listTemplate = mongoOperation.findAll(MongoTemplate.class);
 		List<ITemplate> listITemplate = new ArrayList<ITemplate>();
 		
-		for(Template t1 : listTemplate ) {
+		for(MongoTemplate t1 : listTemplate ) {
 			ITemplate itemp = new JsoupTemplate(t1.getName());
 			
 			List<PageReference> listPageReference = getPageReferenceFromTemplate(t1);
@@ -54,7 +54,7 @@ public class JsoupTemplificator implements ITemplificator {
 	}
 
 	
-	private List<PageReference> getPageReferenceFromTemplate(Template t1) {
+	private List<PageReference> getPageReferenceFromTemplate(MongoTemplate t1) {
 		Query q1 = new Query(Criteria.where("template").is(t1));
 		List<PageReference> listPageRef = (List<PageReference>) mongoOperation.find(q1, PageReference.class);
 		return listPageRef;
@@ -145,7 +145,7 @@ public class JsoupTemplificator implements ITemplificator {
 	}
 
 
-	public String construireFlux(Template t1, int key) {
+	public String construireFlux(MongoTemplate t1, int key) {
 		List<ContentElement> listTemplateElement = t1.getListTemplateElement();
 		List<ContentElement> listVariableElement = t1.getListVariableElement();
 		String htmlVariabiliser = t1.getHtml().replaceAll("ref:page", String.valueOf(key));

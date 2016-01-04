@@ -1,12 +1,13 @@
 package com.oserion.framework.api.business;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.beans.PageReference;
 
-public interface ITemplate {
+public interface ITemplate extends Serializable{
 
 	public String getName() ;
 	public void setName(String name) ;

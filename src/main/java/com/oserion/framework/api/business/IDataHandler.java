@@ -2,6 +2,7 @@ package com.oserion.framework.api.business;
 
 import java.util.List;
 
+import com.oserion.framework.api.exceptions.OserionDatabaseException;
 import org.springframework.stereotype.Component;
 
 import com.oserion.framework.api.business.beans.ContentElement;
@@ -10,6 +11,9 @@ import com.oserion.framework.api.business.beans.ContentElement;
 public interface IDataHandler {
 
 	boolean insertOrUpdateTemplate(ITemplate template);
+	boolean insertTemplate(ITemplate template);
+	boolean updateTemplate(String templateName, String fluxHtml) throws OserionDatabaseException;
+
 	boolean insertOrUpdateManyContent(List<ContentElement> listElement);
 	boolean insertOrUpdateContent(ContentElement ele);
 	boolean insertPageURL(String templateName, String URL);

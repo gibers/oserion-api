@@ -3,6 +3,7 @@ package com.oserion.framework.api.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.oserion.framework.api.business.impl.mongo.beans.MongoTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.beans.PageReference;
-import com.oserion.framework.api.business.impl.beansDB.Template;
 
 @Component
 public class Supervision {
@@ -23,7 +23,7 @@ public class Supervision {
 	public String listPageFromTemplateName(String templateName) {
 		List<PageReference> mylistPageReference = new ArrayList<PageReference>();
 		Query q1 = new Query(Criteria.where("name").is(templateName));
-		Template t1 = (Template) mongoOperation.findOne(q1, Template.class);
+		MongoTemplate t1 = (MongoTemplate) mongoOperation.findOne(q1, MongoTemplate.class);
 		if(t1 == null) 
 			return CodeReturn.error22;
 
@@ -44,7 +44,7 @@ public class Supervision {
 	
 	public String listContentElementFromTemplateName(String templateName) {
 		Query q1 = new Query(Criteria.where("name").is(templateName));
-		Template t1 = (Template) mongoOperation.findOne(q1, Template.class);
+		MongoTemplate t1 = (MongoTemplate) mongoOperation.findOne(q1, MongoTemplate.class);
 		if(t1 == null) {
 			return CodeReturn.error22;
 		}

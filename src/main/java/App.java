@@ -6,7 +6,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import com.oserion.framework.api.business.impl.beansDB.Template;
+import com.oserion.framework.api.business.impl.mongo.beans.MongoTemplate;
 import com.oserion.framework.api.util.MyLogger;
 import com.oserion.framework.api.util.OserionBuilder;
 import com.oserion.framework.api.util.Supervision;
@@ -79,7 +79,7 @@ public class App  {
 		System.out.println(" -- FIN -- ");
 		System.exit(0);
 
-		Template t1 = new Template();
+		MongoTemplate t1 = new MongoTemplate();
 		t1.setName("premierTemplate");
 		t1.setHtml(fluxTemplate);
 
@@ -89,22 +89,22 @@ public class App  {
 		
 		Query q1 = new Query(Criteria.where("name").is("premierTemplate"));
 		Query q2 = new Query();
-//		System.out.println("nb de template q1 => " + mongoOperation.count(q1, Template.class));
-//		System.out.println("nb de template q2 => " + mongoOperation.count(q2, Template.class));
+//		System.out.println("nb de template q1 => " + mongoOperation.count(q1, MongoTemplate.class));
+//		System.out.println("nb de template q2 => " + mongoOperation.count(q2, MongoTemplate.class));
 		
 		
-		Template t2 = a418f.temrepo.findByName("premierTemplate");
+		MongoTemplate t2 = a418f.temrepo.findByName("premierTemplate");
 		System.out.println("t2 => " + t2);
 		System.out.println("t2.id => " + t2.getId() );
 		
 		
-		Template t21 = a418f.temrepo.findByName("premierTemplate");
+		MongoTemplate t21 = a418f.temrepo.findByName("premierTemplate");
 		System.out.println("t21 => " + t21);
 		System.out.println("t21.id => " + t21.getId() );
 
 		
 		
-		Template t3 = a418f.temrepo.findByName("bernard");
+		MongoTemplate t3 = a418f.temrepo.findByName("bernard");
 		System.out.println("t3 => " + t3);
 				
 		

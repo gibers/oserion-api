@@ -5,7 +5,7 @@
 <!-- http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"> -->
 
 	<bean id="Api418Facade"
-		class="com.oserion.framework.oserion.api.classes.Api418Facade">
+		class="com.oserion.framework.oserion.api.classes.OserionApiFacade">
 		<property name="ijst" ref="JsoupTemplificator"></property>
 		<property name="idh" ref="MongoDBDataHandler"></property>
 <!-- 		<constructor-arg ref="JsoupTemplificator"></constructor-arg> -->

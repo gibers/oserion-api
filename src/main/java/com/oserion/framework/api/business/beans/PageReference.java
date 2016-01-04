@@ -2,12 +2,11 @@ package com.oserion.framework.api.business.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oserion.framework.api.business.IPageReference;
+import com.oserion.framework.api.business.impl.mongo.beans.MongoTemplate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.oserion.framework.api.business.impl.beansDB.Template;
 
 @Document
 public class PageReference implements IPageReference{
@@ -22,14 +21,14 @@ public class PageReference implements IPageReference{
 	private int key;
 
 	@DBRef
-	private Template template ;
+	private MongoTemplate template ;
 	
 	public PageReference() {}
-	public PageReference(Template template, String url) {
+	public PageReference(MongoTemplate template, String url) {
 		this.template = template;
 		this.url = url;
 	}
-	public PageReference(Template template, String url, int key) {
+	public PageReference(MongoTemplate template, String url, int key) {
 		this.template = template;
 		this.url = url;
 		this.key = key;
@@ -40,11 +39,11 @@ public class PageReference implements IPageReference{
 	}
 
 	@JsonIgnore
-	public Template getTemplate() {
+	public MongoTemplate getTemplate() {
 		return template;
 	}
 
-	public void setTemplate(Template template) {
+	public void setTemplate(MongoTemplate template) {
 		this.template = template;
 	}
 
