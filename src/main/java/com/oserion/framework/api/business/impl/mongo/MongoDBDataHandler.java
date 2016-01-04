@@ -254,7 +254,15 @@ public class MongoDBDataHandler implements IDataHandler {
 			if(!newlistElementTraiter.contains(cteold))
 				newlistElementASupprimer.add(cteold);
 		}
-		
+
+		// les éléments dans la listes des éléments à rajouter qui existent déjà en BDD 
+		// doivent être mis dans la liste des éléments à modifier.
+		for(ContentElement cte : newlistElementARajouter) {
+			ContentElement cteDB = getContentElementInDB(cte);
+			if(cteDB != null) 
+				newlistElementAModifier.add(cte);
+		}
+
 		// rajout des éléments.
 		insertListTemplateElementToTemplate(t1, newlistElementARajouter);
 		
@@ -331,6 +339,15 @@ public class MongoDBDataHandler implements IDataHandler {
 		System.out.println(" ----------------------- ");
 
 		List<Integer> listKey = listKeyFromTemplateName(t1);
+		
+		//Il convient de vérifier si les éléments à rajouter ne sont pas présent en base(par leurs ref).
+		// Si présent, ils doivent être retiré de la liste des éléments à rajouter, pour les mettre 
+		// dans la liste des éléments à modifier . 
+		for(ContentElement cte : newlistElementARajouter) {
+			ContentElement cteDB = getContentElementInDB(cte);
+			if(cteDB != null) 
+				newlistElementAModifier.add(cte);
+		}
 		
 		// élément à rajouter.
 		addContentElementToKey(t1, newlistElementARajouter, listKey);
