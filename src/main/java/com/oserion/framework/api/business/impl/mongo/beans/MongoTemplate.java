@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oserion.framework.api.business.IPageReference;
 import com.oserion.framework.api.business.ITemplate;
+import com.oserion.framework.api.business.beans.PageReference;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.oserion.framework.api.business.beans.ContentElement;
 
 
-@Document
-public class MongoTemplate {
+@Document(collection = "Template")
+public class MongoTemplate implements ITemplate{
 
 	@Id
     private String id;
@@ -25,11 +24,9 @@ public class MongoTemplate {
     
 	private String html;
 
-	//@DBRef
-	private List<ContentElement> listTemplateElement  = new ArrayList<ContentElement>();
-	//@DBRef
-	private List<ContentElement> listVariableElement  = new ArrayList<ContentElement>();
-	private List<IPageReference> listPage   = new ArrayList<IPageReference>();
+	private List<ContentElement> listTemplateElement  = new ArrayList<>();
+	private List<ContentElement> listVariableElement  = new ArrayList<>();
+	private List<PageReference> listPage = new ArrayList<>();
 
 	public MongoTemplate() {}
 	public MongoTemplate(ITemplate t) {
@@ -56,22 +53,39 @@ public class MongoTemplate {
 	public void setHtml(String html) {
 		this.html = html;
 	}
-	
-	
+
+
+	@Override
 	public List<ContentElement> getListTemplateElement() {
 		return listTemplateElement;
 	}
+
+	@Override
 	public void setListTemplateElement(List<ContentElement> listTemplateElement) {
 		this.listTemplateElement = listTemplateElement;
 	}
+
+	@Override
 	public List<ContentElement> getListVariableElement() {
 		return listVariableElement;
 	}
+
+	@Override
 	public void setListVariableElement(List<ContentElement> listVariableElement) {
 		this.listVariableElement = listVariableElement;
 	}
 
-    @Override
+	@Override
+	public List<PageReference> getListPage() {
+		return listPage;
+	}
+
+	@Override
+	public void setListPage(List<PageReference> listPage) {
+		this.listPage = listPage;
+	}
+
+	@Override
     public String toString() {
         return String.format(
                 "MongoTemplate[name=%s, html='%s']",

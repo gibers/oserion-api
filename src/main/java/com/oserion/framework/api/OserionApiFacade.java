@@ -16,13 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.oserion.framework.api.business.IDataHandler;
 import com.oserion.framework.api.business.ITemplate;
-import com.oserion.framework.api.business.ITemplificator;
-import com.oserion.framework.api.business.beans.ContentElement;
-import com.oserion.framework.api.business.beans.ContentElement.Type;
-import com.oserion.framework.api.business.beans.PageReference;
-import com.oserion.framework.api.business.impl.jsoup.JsoupTemplate;
-import com.oserion.framework.api.util.CodeReturn;
-
 
 @Component
 public class OserionApiFacade {
@@ -37,9 +30,12 @@ public class OserionApiFacade {
 		dataHandler.insertTemplate(name, html);
 	}
 
-	public void getListTemplate() throws OserionDatabaseException {
-		//
-		// dataHandler.insertTemplate(name, html);
+	public List<ITemplate> getTemplates() throws OserionDatabaseException {
+		return dataHandler.selectTemplates();
+	}
+
+	public void addPageUrl(String templateName, String url) throws OserionDatabaseException {
+		dataHandler.insertPageUrl(templateName, url);
 	}
 
 

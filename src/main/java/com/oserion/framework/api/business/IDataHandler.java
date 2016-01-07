@@ -12,7 +12,7 @@ public interface IDataHandler {
 
 	boolean insertOrUpdateTemplate(String templateName, String fluxHtml);
 	void insertTemplate(String templateName, String fluxHtml) throws OserionDatabaseException;
-	boolean updateTemplate(String templateName, String fluxHtml) throws OserionDatabaseException;
+	void updateTemplate(ITemplate template) throws OserionDatabaseException;
 
 	boolean insertOrUpdateManyContent(List<ContentElement> listElement);
 	boolean insertOrUpdateContent(ContentElement ele);
@@ -25,8 +25,9 @@ public interface IDataHandler {
 	String selectHTMLTemplate(String templateName);
 
 	IPage selectFullPage(String Url);
-	List<ITemplate> selectTemplates(String templateName, boolean withUrl, boolean withElements, boolean withHtml);
+	List<ITemplate> selectTemplates() throws OserionDatabaseException;
 	ContentElement selectContent(String contentId, String contentType);
+	void insertPageUrl(String templateName, String newUrl ) throws OserionDatabaseException;
 
 
 	/** DEBUG */

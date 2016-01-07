@@ -1,32 +1,25 @@
 package com.oserion.framework.api.business.impl.mongo;
 
-import static com.mongodb.client.model.Filters.eq;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.oserion.framework.api.util.OserionBuilder;
+import com.oserion.framework.api.business.beans.PageReference;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.oserion.framework.api.business.*;
 import com.oserion.framework.api.business.impl.mongo.beans.MongoTemplate;
 import com.oserion.framework.api.exceptions.OserionDatabaseException;
-import com.oserion.framework.api.util.CodeReturn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import com.oserion.framework.api.business.beans.ContentElement;
-
 
 
 @EnableMongoRepositories
 public class MongoDBDataHandler implements IDataHandler {
-
-	private final String MONGO_COLLECTION_TEMPLATE = "MongoTemplate";
 
     @Autowired
     private ITemplificator templificator;
@@ -49,20 +42,63 @@ public class MongoDBDataHandler implements IDataHandler {
         Query q = new Query(Criteria.where("name").is(name));
         MongoTemplate t = operations.findOne(q, MongoTemplate.class);
 
-        if(t != null)
+        if (t != null)
             throw new OserionDatabaseException(
                     String.format("The template %s already exists.", name));
 
         t = new MongoTemplate(templificator.createTemplateFromHTML(name, html));
 
-        /*operations.insertAll(t.getListTemplateElement());
-        operations.insertAll(t.getListVariableElement());*/
         operations.insert(t);
     }
 
     @Override
-    public boolean updateTemplate(String templateName, String fluxHtml) throws OserionDatabaseException {
-        return false;
+    public List<ITemplate> selectTemplates() throws OserionDatabaseException {
+        try {
+            return (List<ITemplate>)(List<?>) operations.findAll(MongoTemplate.class);
+        } catch (Exception e) {
+            throw new OserionDatabaseException("An error happen while retrieving templates");
+        }
+    }
+
+    @Override
+    public void insertPageUrl(String templateName, String newUrl ) throws OserionDatabaseException {
+        Query q = new Query(Criteria.where("listPage").elemMatch(Criteria.where("url").is(newUrl)));
+        MongoTemplate t = operations.findOne(q, MongoTemplate.class);
+        if(t != null)
+            throw new OserionDatabaseException(
+                    String.format("The url %s already exists.", newUrl));
+
+        q = new Query(Criteria.where("name").is(templateName));
+        t = operations.findOne(q, MongoTemplate.class);
+        if(t == null)
+            throw new OserionDatabaseException(
+                    String.format("The template %s does not exists.", templateName));
+
+        List<PageReference> l = t.getListPage() == null ? new ArrayList<>() : t.getListPage();
+        l.add(new PageReference(newUrl));
+        t.setListPage(l);
+        operations.save(t);
+    }
+
+    @Override
+    public void updateTemplate(ITemplate template) throws OserionDatabaseException {
+        MongoTemplate t;
+        if(template instanceof MongoTemplate && ((MongoTemplate) template).getId() != null){
+            t = (MongoTemplate) template;
+        }
+        else{
+            Query q = new Query(Criteria.where("name").is(template.getName()));
+            t = operations.findOne(q, MongoTemplate.class);
+            if (t == null)
+                throw new OserionDatabaseException(
+                        String.format("The template %s does not exists.", template.getName()));
+            t.setHtml(template.getHtml());
+            t.setListTemplateElement(template.getListTemplateElement());
+            t.setListVariableElement(template.getListTemplateElement());
+            t.setListPage(template.getListPage());
+        }
+
+        operations.save(t);
     }
 
     @Override
@@ -106,11 +142,6 @@ public class MongoDBDataHandler implements IDataHandler {
     }
 
     @Override
-    public List<ITemplate> selectTemplates(String templateName, boolean withUrl, boolean withElements, boolean withHtml) {
-        return null;
-    }
-
-    @Override
     public ContentElement selectContent(String contentId, String contentType) {
         return null;
     }
@@ -134,7 +165,7 @@ public class MongoDBDataHandler implements IDataHandler {
 
     public void setConnection(IDBConnection connection) throws OserionDatabaseException {
         this.connection = connection;
-        if(this.connection instanceof MongoDBConnection)
+        if (this.connection instanceof MongoDBConnection)
             this.operations = ((MongoDBConnection) this.connection).getOperations();
         else
             throw new OserionDatabaseException("Invalid Connection to MongoDB");

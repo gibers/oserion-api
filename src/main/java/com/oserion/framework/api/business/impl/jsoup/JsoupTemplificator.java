@@ -79,14 +79,14 @@ public class JsoupTemplificator implements ITemplificator {
 	public void splitContenu(String fluxTemplate, JsoupTemplate template ) {
 		Document docJsoup = Jsoup.parse(fluxTemplate);
 		Elements ele = getAllElement(docJsoup);
-		System.out.println("taille ele => " + ele.size());
+		//System.out.println("taille ele => " + ele.size());
 
 		Iterator<Element> it = ele.iterator();
 		while(it.hasNext()) {
 			Element balise = it.next();
 			String type = getClassBalise(balise);
 			if(balise.id().contains("ref:")) {
-				System.out.println(balise.toString());
+				//System.out.println(balise.toString());
 				ContentElement cte = new ContentElement(balise.id(), type , balise.html());
 				//				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE.toString());
 				template.getListVariableElement().add(cte);
@@ -169,11 +169,6 @@ public class JsoupTemplificator implements ITemplificator {
 		}
 		return null;
 	}
-
-
-	//	private String getSquelette(String fluxTemplate) {
-	//		return "squeltte";
-	//	}
 
 }
 

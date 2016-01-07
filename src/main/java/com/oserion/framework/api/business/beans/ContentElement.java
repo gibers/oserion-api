@@ -1,27 +1,13 @@
 package com.oserion.framework.api.business.beans;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-//@Document
 public class ContentElement {
-
-	/*@Id
-    private String id;*/
 
 	public enum Type { EDITABLE, REPEATABLE }
 	
 	private String ref;
 	private String type ;
 	private String value;
-	
-	
-//	public ContentElement(String ref, Enum type, String value) {
-//		this.ref = ref;
-//		this.type = type.name();
-//		this.value = value;
-//	}
-
 
 	public ContentElement() {}
 	public ContentElement(String ref, String type, String value) {
@@ -53,12 +39,5 @@ public class ContentElement {
 		this.value = value;
 	}
 		
-	public void affiche() {
-		System.out.println("---*****------------------");
-		System.out.println("ref => " + ref);
-		System.out.println("type => " + type);
-		System.out.println("value => " + value);
-	}
-	
 }
 

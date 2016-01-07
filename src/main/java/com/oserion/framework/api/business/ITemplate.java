@@ -20,8 +20,8 @@ public interface ITemplate extends Serializable{
 	List<ContentElement> getListVariableElement() ;
 	void setListVariableElement(List<ContentElement> listVariableElement) ;
 
-	List<IPageReference> getListPage();
-	void setListPage(List<IPageReference> listPage);
+	List<PageReference> getListPage();
+	void setListPage(List<PageReference> listPage);
 		
 }
 
