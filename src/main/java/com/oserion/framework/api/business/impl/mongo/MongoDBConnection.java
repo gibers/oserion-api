@@ -8,9 +8,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import org.springframework.stereotype.Component;
 
-@Component
 public class MongoDBConnection implements IDBConnection {
 
 	private static MongoDBConnection instance;
@@ -47,10 +45,6 @@ public class MongoDBConnection implements IDBConnection {
 			}
 		}
 		return instance;
-	}
-
-	public MongoDatabase getDatabase() {
-		return database;
 	}
 
 	@JsonIgnore

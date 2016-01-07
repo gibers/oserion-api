@@ -29,14 +29,12 @@ import com.oserion.framework.api.util.Supervision;
 @ContextConfiguration(classes=OserionBuilder.class)
 public class AppTest {
 
-    public static final String PROPERTY_CONFIG_PATH = "oserion.config.path";
+    /*public static final String PROPERTY_CONFIG_PATH = "oserion.config.path";
     
     private File f1 = new File("C:\\Users\\Jean-Baptiste\\Documents\\oserion\\fichierTestHtml1.html"); 
     
-	@Autowired
 	private OserionApiFacade a418f;
 	
-	@Autowired
 	private Supervision supervision;
 	
 	@BeforeClass
@@ -85,28 +83,28 @@ public class AppTest {
 			e.printStackTrace();
 		}
 		String templateName = FilenameUtils.removeExtension( f1.getName());
-		a418f.updateTemplate(templateName , strTemplate);
+		//a418f.updateTemplate(templateName , strTemplate);
 	}
 	
 	
 //	@Test
 	public void addPageUrl() {
 		String templateName = FilenameUtils.removeExtension( f1.getName());
-		a418f.addPageUrl(templateName, "/toto/titi");
+		//a418f.addPageUrl(templateName, "/toto/titi");
 	}
 	
 	@Test
 	public void selectTemplate() {
-		List<ITemplate> listITemplate = a418f.selectTemplates();
-		for( ITemplate it : listITemplate) {
+		//List<ITemplate> listITemplate = a418f.selectTemplates();
+		/*for( ITemplate it : listITemplate) {
 			System.out.println("nom TEMPLATE : " + it.getName());
 			if(it.getListPage() != null)
 				for(IPageReference p1 : it.getListPage()) {
 					System.out.println(" ** URL : " + p1.getUrl() );
 					System.out.println(" ** KEY : " + p1.getKey() );
 				}
-		}
-	}
+		}*/
+	/*}
 	
 
 //	@Test
@@ -116,7 +114,7 @@ public class AppTest {
 //		supervision.listContentElementFromTemplateName(templateName);
 		supervision.listPageFromTemplateName(templateName);
 	}
-	
+	*/
 	
 	
 }

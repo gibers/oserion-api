@@ -6,9 +6,13 @@ import com.oserion.framework.api.OserionApiFacade;
 import com.oserion.framework.api.business.IDBConnection;
 import com.oserion.framework.api.business.IDataHandler;
 import com.oserion.framework.api.business.ITemplate;
+import com.oserion.framework.api.business.ITemplificator;
 import com.oserion.framework.api.business.impl.jsoup.JsoupTemplate;
+import com.oserion.framework.api.business.impl.jsoup.JsoupTemplificator;
 import com.oserion.framework.api.business.impl.mongo.MongoDBConnection;
 import com.oserion.framework.api.business.impl.mongo.MongoDBDataHandler;
+import com.oserion.framework.api.exceptions.OserionDatabaseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,28 +27,29 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class OserionBuilder {
 
 	
-//	@Bean
-//	public ITemplificator buildTemplificator() {
-//		return new JsoupTemplificator();
-//	}
-
-	public ITemplate buildTemplate(){
-		return new JsoupTemplate();
-	}
-
 	@Bean
 	public IDBConnection buildDBConnection() {
 		return MongoDBConnection.getInstance();
 	}
 
 	@Bean
-	public IDataHandler buildDataHandler() {
-		return new MongoDBDataHandler();
+	public IDataHandler buildDataHandler() throws OserionDatabaseException {
+		return new MongoDBDataHandler(buildDBConnection());
 	}
 
 	@Bean
 	public OserionApiFacade buildApiFacade() {
 		return new OserionApiFacade();
+	}
+
+	@Bean
+	public OserionBuilder getBuilder(){
+		return this;
+	}
+
+	@Bean
+	public ITemplificator buildTemplificator(){
+		return new JsoupTemplificator();
 	}
 
 }

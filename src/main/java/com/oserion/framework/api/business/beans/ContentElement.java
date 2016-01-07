@@ -3,11 +3,11 @@ package com.oserion.framework.api.business.beans;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+//@Document
 public class ContentElement {
 
-	@Id
-    private String id;
+	/*@Id
+    private String id;*/
 
 	public enum Type { EDITABLE, REPEATABLE }
 	

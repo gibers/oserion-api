@@ -10,8 +10,8 @@ import com.oserion.framework.api.business.beans.ContentElement;
 @Component
 public interface IDataHandler {
 
-	boolean insertOrUpdateTemplate(ITemplate template);
-	boolean insertTemplate(ITemplate template);
+	boolean insertOrUpdateTemplate(String templateName, String fluxHtml);
+	void insertTemplate(String templateName, String fluxHtml) throws OserionDatabaseException;
 	boolean updateTemplate(String templateName, String fluxHtml) throws OserionDatabaseException;
 
 	boolean insertOrUpdateManyContent(List<ContentElement> listElement);

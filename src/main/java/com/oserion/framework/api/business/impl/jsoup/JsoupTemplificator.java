@@ -17,27 +17,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Component;
 
-@Component
 public class JsoupTemplificator implements ITemplificator {
 
     private static final Logger LOG = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     
 	public String texte = "texte";
 
-	@Autowired 	
-	public MongoOperations mongoOperation;
+	/*@Autowired
+	public MongoOperations mongoOperation;*/
 
 	//	@Autowired
 	//	private ITemplate template = null;
 
 	
-	public List<ITemplate> selectTemplates() {
+	/*public List<ITemplate> selectTemplates() {
 		List<MongoTemplate> listTemplate = mongoOperation.findAll(MongoTemplate.class);
 		List<ITemplate> listITemplate = new ArrayList<ITemplate>();
 		
@@ -51,30 +45,26 @@ public class JsoupTemplificator implements ITemplificator {
 			listITemplate.add(itemp);
 		}
 		return listITemplate;
-	}
+	}*/
 
 	
-	private List<PageReference> getPageReferenceFromTemplate(MongoTemplate t1) {
+	/*private List<PageReference> getPageReferenceFromTemplate(MongoTemplate t1) {
 		Query q1 = new Query(Criteria.where("template").is(t1));
 		List<PageReference> listPageRef = (List<PageReference>) mongoOperation.find(q1, PageReference.class);
 		return listPageRef;
-	}
+	}*/
 
 
-	public ContentElement majContenu(ContentElement e) {
+	/*public ContentElement majContenu(ContentElement e) {
 		ContentElement cte = new ContentElement(e.getRef(), e.getType() , e.getValue());
 		//		ContentElement cte = new ContentElement(e.getRef(), ContentElement.Type.valueOf(e.getType()), e.getValue());
 		return cte; 
-	}
+	}*/
 
-	public JsoupTemplate createTemplateFromHTML(String fluxTemplate, String templateName) {
-		JsoupTemplate template = new JsoupTemplate(templateName);
-		template.setHtml(fluxTemplate);
-		splitContenu(fluxTemplate, template);
-
-//		template.afficheTemplateEle();
-//		template.afficheVariableTemplateEle();
-
+	public JsoupTemplate createTemplateFromHTML(String name, String html) {
+		JsoupTemplate template = new JsoupTemplate(name);
+		template.setHtml(html);
+		splitContenu(html, template);
 		return template;
 	}
 
@@ -96,6 +86,7 @@ public class JsoupTemplificator implements ITemplificator {
 			Element balise = it.next();
 			String type = getClassBalise(balise);
 			if(balise.id().contains("ref:")) {
+				System.out.println(balise.toString());
 				ContentElement cte = new ContentElement(balise.id(), type , balise.html());
 				//				ContentElement cte = new ContentElement(balise.id(), ContentElement.Type.EDITABLE.toString());
 				template.getListVariableElement().add(cte);

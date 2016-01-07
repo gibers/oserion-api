@@ -13,10 +13,8 @@ import org.springframework.stereotype.Component;
 import com.oserion.framework.api.business.beans.ContentElement;
 import com.oserion.framework.api.business.beans.PageReference;
 
-@Component
 public class Supervision {
 	
-	@Autowired 	
 	public MongoOperations mongoOperation;
 
 	
