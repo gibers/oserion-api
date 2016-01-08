@@ -11,9 +11,6 @@ public class PageReference{
 		this.url = url;
 		this.key = key;
 	}
-	public PageReference(String newUrl) {
-		this.url = newUrl;
-	}
 
 	public String getUrl() {
 		return url;

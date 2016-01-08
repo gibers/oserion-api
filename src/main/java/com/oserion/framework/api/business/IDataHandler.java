@@ -12,11 +12,10 @@ public interface IDataHandler {
 
 	boolean insertOrUpdateTemplate(String templateName, String fluxHtml);
 	void insertTemplate(String templateName, String fluxHtml) throws OserionDatabaseException;
-	void updateTemplate(ITemplate template) throws OserionDatabaseException;
+	void updateTemplate(String name, String html) throws OserionDatabaseException;
 
 	boolean insertOrUpdateManyContent(List<ContentElement> listElement);
 	boolean insertOrUpdateContent(ContentElement ele);
-	boolean insertPageURL(String templateName, String URL);
 
 	boolean deletePageURL(String URL);
 	boolean deleteContent(String contentId, String contentType);

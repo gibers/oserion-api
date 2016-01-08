@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.oserion.framework.api.business.beans.ContentElement;
 
 
-@Document(collection = "Template")
+@Document(collection = "templates")
 public class MongoTemplate implements ITemplate{
 
 	@Id
